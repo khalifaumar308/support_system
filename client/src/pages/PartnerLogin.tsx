@@ -1,6 +1,6 @@
 import Login from "../components/Login"
-import { partner } from "../assets"
-import { back_arrow } from "../assets"
+import {partner} from "../assets"
+import {back_arrow} from "../assets"
 
 const PartnerLogin = () => {
   return (

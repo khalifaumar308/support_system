@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useLoginMutation } from "../store/slices/api/apiEndpoints";
 import { setCredentials } from "../store/slices/api/authSlice";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../store/hooks";
 
-const Login = () => {
+const Login:React.FC = () => {
     const [userId, setUserId] = useState('')
     const [password, setPassword] = useState('')
     const [saveUser, setSaveUser] = useState(false)
@@ -12,7 +12,7 @@ const Login = () => {
     const [loginUser, { isLoading, isError, error }] = useLoginMutation();
     const [errMsg, setErrMsg] = useState("");
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -20,10 +20,18 @@ const Login = () => {
     }, [userId, password]);
 
 
-    const onSubmitHandler = async () => {
+  const onSubmitHandler = async () => {
+      try {
         const userData = await loginUser({ email: userId, password });
-        if (userData.error) {
-            const status = userData.error.originalStatus
+        dispatch(setCredentials({ ...userData }));
+        console.log(userData);
+        if (saveUser) {
+        localStorage.setItem("userData", JSON.stringify(userData));
+        }
+        console.log("login successfully", isError, error);
+        navigate('/dashboard')
+      } catch (error) {
+        const status = error.originalStatus
             if (!status) {
               setErrMsg("No Server Response");
             } else if (status === 400) {
@@ -33,15 +41,8 @@ const Login = () => {
             } else {
               setErrMsg("Login Failed");
             }
-        } else {
-            dispatch(setCredentials({ ...userData }));
-            console.log(userData);
-            if (saveUser) {
-            localStorage.setItem("userData", JSON.stringify(userData));
-            }
-            console.log("login successfully", isError, error);
-            navigate('/dashboard')
-        }
+      }
+        
     }
 
   return (

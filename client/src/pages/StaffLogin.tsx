@@ -1,6 +1,6 @@
 import Login from "../components/Login"
-import { staff } from "../assets"
-import { back_arrow } from "../assets"
+import {staff}  from "../assets"
+import {back_arrow} from "../assets"
 
 const StaffLogin = () => {
   return (
