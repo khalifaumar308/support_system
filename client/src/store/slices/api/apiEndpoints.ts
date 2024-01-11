@@ -1,7 +1,5 @@
 import { apiSlice } from "./apiSlice";
-
-type user = { name: string, email: string, token: 'string', role: string }
-type luser = { email: string, password: string };
+import { user, luser, afiliate, lafiliate } from "../types";
 
 export const appApiEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,9 +10,16 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+    getUsers: builder.query<afiliate, lafiliate>({
+      query: (credentials) => ({
+        url: credentials ? `user/affiliates/${credentials.id}` : "user/affiliates/",
+        
+      })
+    })
   }),
 });
 
 export const {
-  useLoginMutation
+  useLoginMutation,
+  useGetUsersQuery,
 } = appApiEndpoints;

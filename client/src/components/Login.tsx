@@ -21,17 +21,17 @@ const Login:React.FC = () => {
 
 
   const onSubmitHandler = async () => {
-      try {
-        const userData = await loginUser({ email: userId, password });
+    const userData = await loginUser({ email: userId, password });
+      if (!userData.error) {
         dispatch(setCredentials({ ...userData }));
         console.log(userData);
         if (saveUser) {
         localStorage.setItem("userData", JSON.stringify(userData));
         }
         console.log("login successfully", isError, error);
-        navigate('/dashboard')
-      } catch (error) {
-        const status = error.originalStatus
+        navigate('/user')
+      } else {
+        const status = userData.error.originalStatus
             if (!status) {
               setErrMsg("No Server Response");
             } else if (status === 400) {

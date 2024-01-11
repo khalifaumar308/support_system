@@ -1,7 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "./slices/api/apiSlice";
+import appStateSlice from "./slices/app/appStateSlice";
 import authReducer from "./slices/api/authSlice";
+import appUsersSlice from "./slices/app/appUsersSlice";
 
 
 export const store = configureStore({
@@ -9,6 +11,8 @@ export const store = configureStore({
     // Add the generated reducer as a specific top-level slice
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
+    appState: appStateSlice,
+    appUsers: appUsersSlice,
   },
 
   middleware: (getDefaultMiddleware) =>
