@@ -2,7 +2,7 @@ import { useAppDispatch } from "../store/hooks"
 import { useGetUsersQuery } from "../store/slices/api/apiEndpoints"
 
 const Users = () => {
-  const {data:users, isLoading } = useGetUsersQuery({id:'656473cd5addeb694fd67e2d'})
+  const {data:users, isLoading } = useGetUsersQuery({id:false})
   // const users = getUsers()
   return (
     isLoading?<h2>Loading....</h2>:

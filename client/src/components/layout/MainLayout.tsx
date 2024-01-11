@@ -5,8 +5,8 @@ import sizeConfigs from "../../configs/sizeConfigs";
 import Sidebar from "../Sidebar";
 import Topbar from "../Topbar";
 
-
 const MainLayout = () => {
+  
   return (
     <Box sx={{ display: "flex" }}>
       <Topbar />

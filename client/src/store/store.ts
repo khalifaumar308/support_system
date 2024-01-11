@@ -4,7 +4,7 @@ import { apiSlice } from "./slices/api/apiSlice";
 import appStateSlice from "./slices/app/appStateSlice";
 import authReducer from "./slices/api/authSlice";
 import appUsersSlice from "./slices/app/appUsersSlice";
-
+import appSchoolsSlice from "./slices/app/appSchoolsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +13,7 @@ export const store = configureStore({
     auth: authReducer,
     appState: appStateSlice,
     appUsers: appUsersSlice,
+    appSchools: appSchoolsSlice,
   },
 
   middleware: (getDefaultMiddleware) =>

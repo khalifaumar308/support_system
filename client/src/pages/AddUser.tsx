@@ -1,59 +1,40 @@
 import { useState, FormEvent } from "react"
 import Modal from "../components/Modal"
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import { useGetSchoolsQuery } from "../store/slices/api/apiEndpoints"
+import SchoolIcon from '@mui/icons-material/School';
+import { school } from "../store/slices/types";
+import { useCreateUserMutation } from "../store/slices/api/apiEndpoints";
+import { useNavigate } from "react-router-dom";
 
 
 const AddUser = () => {
+  const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: false })
+  const [createUser, { isLoading, isError }] = useCreateUserMutation();
   const [open, setOpen] = useState(true)
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [role, setRole] = useState('--Choose--')
+  const [referred, setReferred] = useState<string[]>([]);
+  const [toShow, setToShow] = useState<school[]>([]);
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-  const items = [
-    {
-      id: 0,
-      name: 'Cobol ',
-      address: 'kano'
-    },
-    {
-      id: 1,
-      name: 'JavaScript',
-      address: 'jigawa'
-    },
-    {
-      id: 2,
-      name: 'Basic',
-      address: 'jigawa'
-
-    },
-    {
-      id: 3,
-      name: 'PHP',
-      address: 'jigawa'
-
-    },
-    {
-      id: 4,
-      name: 'Java',
-      address: 'jigawa'
-
-    }
-  ]
+  const items =sLoading?[]: [...schools.schools]
 
   const formatResult = (item) => {
     return (
-      <>
-        <span style={{ display: 'block', textAlign: 'left' }}>id: {item.id}</span>
-        <span style={{ display: 'block', textAlign: 'left' }}>name: {item.name}</span>
-      </>
+      <div className="bg-red-100 flex mr-1 rounded-md shadow-sm shadow-slate-200">
+        <SchoolIcon />
+        <h2 className="ml-1 ">{item.name}</h2>
+      </div>
     )
   }
 
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
-    console.log(string, results)
   }
 
   const handleOnHover = (result) => {
@@ -63,32 +44,54 @@ const AddUser = () => {
 
   const handleOnSelect = (item) => {
     // the item selected
-    console.log(item)
+    setReferred([...referred, item._id])
+    setToShow([...toShow, item])
   }
 
   const handleOnFocus = () => {
-    console.log('Focused')
   }
 
-  const register = (e:FormEvent) => {
+  const referredDivs = toShow.map((item, id) => (
+    <div key={id} className="bg-red-100 flex mr-1 rounded-md shadow-sm shadow-slate-200">
+      <SchoolIcon />
+      <h2 className="ml-1 ">{item.name}</h2>
+    </div>
+  ))
+
+  const register = async (e:FormEvent) => {
     e.preventDefault()
-    console.log(e.target)
+    // console.log(toShow, referred)
+    const data = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      role: e.target.role.value,
+      phone: e.target.phone.value,
+      schoolsReferred: referred
+    }
+    const returned = await createUser(data)
+    if (returned.error) {
+      console.log(returned.error)
+      setError('School Creation Failed')
+    } else {
+      setError('School Created success')
+      setTimeout(() => (navigate('/user/users/all')), 3000)
+    }
   }
   return (
     open&&(<Modal onClose={()=>setOpen(false)}>
       <div>
         <form className="flex flex-col" onSubmit={register}>
           <label className="flex flex-col">Name
-            <input placeholder="name"
+            <input name="name" placeholder="name"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">Email
-            <input type="email" placeholder="mail@mail.com"
+            <input name="email" type="email" placeholder="mail@mail.com"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">
             Role
-            <select value={role} onChange={(e)=>setRole(e.target.value)} className="active:border-gray-300 mb-2 border-2 p-2 bg-white border-gray-100 rounded-md w-[50%]" >
+            <select name="role" value={role} onChange={(e)=>setRole(e.target.value)} className="active:border-gray-300 mb-2 border-2 p-2 bg-white border-gray-100 rounded-md w-[50%]" >
               <option>--Choose---</option>
               <option>Admin</option>
               <option>Staff</option>
@@ -98,9 +101,13 @@ const AddUser = () => {
           {role === 'Affiliate' &&
             (<div>
             <label className="flex flex-col">Phone Number
-              <input type="phone" placeholder="+234 000 0000"
+              <input name="phone" type="phone" placeholder="+234 000 0000"
                 className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
             </label>
+            <div>
+              <h3>Schools Referred</h3>
+              {referredDivs}
+            </div>
             <ReactSearchAutocomplete
               items={items}
               onSearch={handleOnSearch}
@@ -112,7 +119,8 @@ const AddUser = () => {
               fuseOptions={{ keys: ['name', 'address'] }}
             />
             </div>)}
-          <button type="submit">Save</button>
+          <div>{error}</div>
+          <button className="bg-[#1e253a] text-white shadow-md shadow-gray-100 hover:bg-slate-600 p-2 rounded-md mt-2"  type="submit">Save</button>
         </form>
       </div>
     </Modal>)

@@ -1,4 +1,4 @@
-import { Tasks, Users, Dashboard, Schools, AddUser, UsersLayout } from "../pages";
+import { Tasks, Users, Dashboard, Schools, AddUser, UsersLayout, AddSchool } from "../pages";
 import { RouteType } from "./config";
 
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
@@ -46,13 +46,31 @@ const appRoutes: RouteType[] = [
     ]
   },
   {
-    path: "schools",
-    element: <Schools />,
+    path: "/user/schools",
+    element: <UsersLayout />,
     state: "schools",
     sidebarProps: {
       displayText: "Schools",
       icon: <SchoolOutlinedIcon />
-    }
+    },
+    child: [
+      {
+        path: "/user/schools/all",
+        element: <Schools />,
+        state: "all",
+        sidebarProps: {
+          displayText: "All Schools",
+        }
+      },
+      {
+        path: "/user/schools/addschool",
+        element: <AddSchool />,
+        state: "all",
+        sidebarProps: {
+          displayText: "Add School",
+        }
+      }
+    ]
   },
   {
     path: "tasks",

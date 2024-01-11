@@ -4,8 +4,37 @@ export type afiliate = {
   email: string;
   name: string;
   phone: string;
+  role?: string;
   schoolsReferred: string[]
 }
 export type lafiliate = {
-  id?: string;
+  id?: string | false;
+}
+export type school = {
+  email: string;
+  name: string;
+  students: number;
+  onboarded: boolean;
+  trained: boolean;
+  onboardDate: Date;
+  trainDate: Date;
+  address: string;
+  package: number;
+  payment: boolean[];
+}
+
+export type schoolUpdate = {
+  id: string;
+  students?: number;
+  onboarded?: boolean;
+  trained?: boolean;
+  onboardDate?: Date;
+  trainDate?: Date;
+  address?: string;
+  package?: number;
+  payment?: boolean[]
+}
+
+export type lschool = {
+  message: string
 }
