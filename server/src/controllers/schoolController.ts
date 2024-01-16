@@ -25,7 +25,7 @@ export const updateSchool = async (req: Request, res: Response) => {
   const schoolId = req.params[0]
   if (!schoolId) { return res.status(400) }
   const fields = req.query
-  console.log(fields)
+  // console.log(fields)
   const update = await schoolsModel.findByIdAndUpdate(schoolId, fields);
   if (update) {
     return res.status(201).json({message:`school ${schoolId} updated`})

@@ -7,6 +7,7 @@ interface school {
   students: number;
   onboarded: Boolean;
   trained: Boolean;
+  currentTerm: string;
   onboardDate: Date;
   trainDate: Date;
   address: string;
@@ -27,6 +28,8 @@ const schoolSchema = new Schema<school, schoolModel, schoolMethods>({
   onboarded: Boolean,
   trained: Boolean,
   onboardDate: Date,
+  trainDate: Date,
+  currentTerm: String,
   students: Number,
   package: Number,
   payment: [Boolean]
