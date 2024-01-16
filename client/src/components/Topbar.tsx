@@ -4,7 +4,9 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import Input from '@mui/material/Input';
 import { useState } from "react";
-import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import colorConfigs from "../configs/colorConfigs";
 import sizeConfigs from "../configs/sizeConfigs";
@@ -12,9 +14,10 @@ import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEnd
 
 
 const Topbar = () => {
-  const { data: users, isLoading } = useGetUsersQuery({id:false})
-  const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({id:false})
+  const { data: users, isLoading , isError} = useGetUsersQuery({id:false})
+  const { data: schools, isLoading: sLoading, isError:sError } = useGetSchoolsQuery({id:false})
   const loading = isLoading || sLoading
+  const navigate = useNavigate()
 
   const formatResult = (item) => {
     return (
@@ -24,29 +27,33 @@ const Topbar = () => {
       </>
     )
   }
-  const items = loading?[]:[...users.affiliates, ...schools.schools]
+  const items = loading?[]:isError?[]:[...users.affiliates, ...schools.schools]
 
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
-    console.log(string, results)
+    // console.log(string, results)
   }
 
   const handleOnHover = (result) => {
     // the item hovered
-    console.log(result)
+    // console.log(result)
   }
 
   const handleOnSelect = (item) => {
     // the item selected
-    console.log(item)
+    // console.log(item)
+    navigate(`view/${item._id}`)
+    
   }
 
   const handleOnFocus = () => {
     console.log('Focused')
   }
-
+  console.log(isError)
   return (
+    isLoading ? (<div className="ml-[270px]">Loading...</div>) : (
+      isError ? (<div className="ml-[270px]">Error</div>):
     <AppBar
       position="fixed"
       sx={{
@@ -68,7 +75,7 @@ const Topbar = () => {
           formatResult={formatResult}
           fuseOptions={{ keys: ['name', 'address'] }}
         />
-    </AppBar>
+    </AppBar>)
   );
 };
 

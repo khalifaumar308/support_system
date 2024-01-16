@@ -62,6 +62,7 @@ const AddSchool = () => {
       trainDate: trained ? e.target.trainingDate.value : '',
       payment,
       package: e.target.package.value,
+      currentTerm: term,
     }
 
     

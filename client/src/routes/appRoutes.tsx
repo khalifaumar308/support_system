@@ -1,4 +1,5 @@
 import { Tasks, Users, Dashboard, Schools, AddUser, UsersLayout, AddSchool } from "../pages";
+import View from "../components/View";
 import { RouteType } from "./config";
 
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
@@ -79,6 +80,14 @@ const appRoutes: RouteType[] = [
     sidebarProps: {
       displayText: "Tasks",
       icon: <AssignmentTurnedInOutlinedIcon />
+    }
+  },
+  {
+    path: "view/:id",
+    element: <View />,
+    state: "view",
+    sidebarProps: {
+      displayText: ""
     }
   },
 ]

@@ -20,7 +20,9 @@ export type school = {
   trainDate: Date;
   address: string;
   package: number;
+  currentTerm: string;
   payment: boolean[];
+  _id?: string;
 }
 
 export type schoolUpdate = {
@@ -32,6 +34,7 @@ export type schoolUpdate = {
   trainDate?: Date;
   address?: string;
   package?: number;
+  currentTerm?: string;
   payment?: boolean[]
 }
 
