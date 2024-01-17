@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { afiliate, school } from "../store/slices/types";
+import { useEffect, useState } from "react";
+import { afiliate, school } from "../../store/slices/types";
 import School from "@mui/icons-material/School";
-import { useUpdateSchoolMutation } from "../store/slices/api/apiEndpoints";
-import { useGetSchoolsQuery } from "../store/slices/api/apiEndpoints";
+import { useUpdateSchoolMutation } from "../../store/slices/api/apiEndpoints";
+import { useGetSchoolsQuery } from "../../store/slices/api/apiEndpoints";
 import { useParams } from "react-router-dom";
 
 type props = {
@@ -19,43 +19,50 @@ function SchoolView() {
   const [changeParam, setChangeParam] = useState<string>('---Choose---');
   const [changeValue, setChangeValue] = useState<string>('');
   const [boolVals, setBoolVals] = useState<boolean>(false);
-  const [currentTerm, setCurrentTerm] = useState<string>(item.currentTerm);
+  const [currentTerm, setCurrentTerm] = useState<string>('');
   const [fterm, setFterm] = useState<boolean>(false);
   const [sterm, setSterm] = useState<boolean>(false);
   const [lterm, setLterm] = useState<boolean>(false);
   const [changeObj, setChangeObj] = useState<object>({});
   const [updateSchool, {isLoading, isError, Error}] = useUpdateSchoolMutation()
 
+  useEffect(() => {
+    setCurrentTerm(item.currentTerm)
+  }, [sLoading])
   // const changeObj = {
   //   Address: "address",
   //   Studetns: "students"
   // }
-  const paymentL = item.trained ? item.payment.length : 0
+  const paymentL = sLoading?0: item.trained ? item.payment.length : 0
   const payList = []
-  if (paymentL > 0) {
-    payList.push(
-      (<div className="flex flex-row items-center align-middle">
-        <h2>First Term:</h2>
-        <p className="ml-2 border-gray-100 rounded-md w-full">{item.payment[0]? "Payed":"Yet To Pay"}</p>
-      </div>)
-    )
-    if (paymentL > 1) {
-      payList.push((
-        <div className="flex flex-row items-center align-middle">
-          <h2>Second Term:</h2>
-          <p className="ml-2 border-gray-100 rounded-md w-full">{item.payment[1] ? "Payed" : "Yet To Pay"}</p>
-        </div>
-      ))
-      if (paymentL > 2) {
+
+  if (!sLoading) {
+
+    if (paymentL > 0) {
+      payList.push(
+        (<div className="flex flex-row items-center align-middle">
+          <h2>First Term:</h2>
+          <p className="ml-2 border-gray-100 rounded-md w-full">{item.payment[0]? "Payed":"Yet To Pay"}</p>
+        </div>)
+      )
+      if (paymentL > 1) {
         payList.push((
-        <div className="flex flex-row items-center align-middle">
-          <h2>Third Term:</h2>
-          <p className="ml-2 border-gray-100 rounded-md w-full">{item.payment[2] ? "Payed" : "Yet To Pay"}</p>
-        </div>
-      ))}
+          <div className="flex flex-row items-center align-middle">
+            <h2>Second Term:</h2>
+            <p className="ml-2 border-gray-100 rounded-md w-full">{item.payment[1] ? "Payed" : "Yet To Pay"}</p>
+          </div>
+        ))
+        if (paymentL > 2) {
+          payList.push((
+          <div className="flex flex-row items-center align-middle">
+            <h2>Third Term:</h2>
+            <p className="ml-2 border-gray-100 rounded-md w-full">{item.payment[2] ? "Payed" : "Yet To Pay"}</p>
+          </div>
+        ))}
+      }
     }
   }
-  const viewContent = (
+  const viewContent = sLoading? (<div>Loading...</div>):(
     <div className="flex w-full flex-col bg-slate-200 p-2 mt-2">
       <div className="flex flex-row">
         <h2>Email:</h2>
@@ -228,7 +235,7 @@ function SchoolView() {
     </div>
   )
               
-  return (
+  return sLoading? <div>Loading...</div>: (
     <div style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }} className="pl-[280px] flex items-center content-center fixed top-0 left-0 right-0 bottom-0 bgc-[#3f33]"
     >
       <div className="bg-gray-100 p-5 rounded-lg relative w-[90%] xl:ml-[10%] xl:w-[60%]">

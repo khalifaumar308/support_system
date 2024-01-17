@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom"
-import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEndpoints";
-import { afiliate, school } from "../store/slices/types";
+import { useGetUsersQuery, useGetSchoolsQuery } from "../../store/slices/api/apiEndpoints";
+import { afiliate, school } from "../../store/slices/types";
 import { useState } from "react";
-import ViewComp from "./ViewComp";
+import ViewComp from "./SchoolView";
 import UserView from "./UserView";
 
 const View = () => {

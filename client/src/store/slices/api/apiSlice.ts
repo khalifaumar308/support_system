@@ -14,10 +14,12 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  
 });
 
 
 export const apiSlice = createApi({
   baseQuery: baseQuery,
+  tagTypes: ['Users', 'Schools'],
   endpoints: (builder) => ({}),
 });

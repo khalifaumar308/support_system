@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react"
-import Modal from "../components/Modal"
-import { useCreateSchoolMutation } from "../store/slices/api/apiEndpoints";
-import { school } from "../store/slices/types";
+import Modal from "../../components/Modal"
+import { useCreateSchoolMutation } from "../../store/slices/api/apiEndpoints";
+import { school } from "../../store/slices/types";
 import { useNavigate } from "react-router-dom";
 
 const AddSchool = () => {

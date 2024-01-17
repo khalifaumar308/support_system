@@ -1,10 +1,10 @@
 import { useState, FormEvent } from "react"
-import Modal from "../components/Modal"
+import Modal from "../../components/Modal"
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
-import { useGetSchoolsQuery } from "../store/slices/api/apiEndpoints"
+import { useGetSchoolsQuery } from "../../store/slices/api/apiEndpoints"
 import SchoolIcon from '@mui/icons-material/School';
-import { school } from "../store/slices/types";
-import { useCreateUserMutation } from "../store/slices/api/apiEndpoints";
+import { school } from "../../store/slices/types";
+import { useCreateUserMutation } from "../../store/slices/api/apiEndpoints";
 import { useNavigate } from "react-router-dom";
 import { Password } from "@mui/icons-material";
 

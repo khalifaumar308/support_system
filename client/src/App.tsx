@@ -8,7 +8,7 @@ import {
 import ClientLogin from "./pages/ClientLogin";
 import PartnerLogin from "./pages/PartnerLogin";
 import MainLayout from "./components/layout/MainLayout";
-import View from "./components/View";
+import View from "./components/adminComponents/View";
 import { routes } from "./routes";
 
 
