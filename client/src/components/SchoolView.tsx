@@ -2,13 +2,19 @@ import { useState } from "react";
 import { afiliate, school } from "../store/slices/types";
 import School from "@mui/icons-material/School";
 import { useUpdateSchoolMutation } from "../store/slices/api/apiEndpoints";
+import { useGetSchoolsQuery } from "../store/slices/api/apiEndpoints";
+import { useParams } from "react-router-dom";
 
 type props = {
   item: school;
   userType: 'user' | 'school' | object;
 }
 
-function ViewComp({ item, userType }: props) {
+function SchoolView() {
+  const params = useParams();
+  const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: false })
+  const item = schools?.schools.filter(school=>school._id === params.id)[0]
+
   const [update, setUpdate] = useState(false)
   const [changeParam, setChangeParam] = useState<string>('---Choose---');
   const [changeValue, setChangeValue] = useState<string>('');
@@ -197,21 +203,21 @@ function ViewComp({ item, userType }: props) {
           <option value="---Choose---">--Choose---</option>
           <option value="students">Students</option>
           <option value="address">Address</option>
-          {item.onboarded &&
+          {!item.onboarded &&
             <>
               <option value="onboarded">OnBoarded</option>
               <option value="onboardDate">On-Boarded On:</option>
-              <option value="package">Package</option>
-              <option value="currentTerm">currentTerm</option>
             </>
           }
-          {item.trained &&
+          {!item.trained &&
             <>
               <option value="trained">Trained</option>
               <option value="trainDate">Trained On:</option>
-              <option value="payment">Payment</option>
             </>
           }
+          <option value="package">Package</option>
+          <option value="currentTerm">currentTerm</option>
+          <option value="payment">Payment</option>
         </select>
         {changeItem}
         {changeParam != '---Choose---' &&
@@ -239,4 +245,4 @@ function ViewComp({ item, userType }: props) {
   );
 }
 
-export default ViewComp
+export default SchoolView

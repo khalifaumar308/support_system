@@ -3,17 +3,18 @@ import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEnd
 import { afiliate, school } from "../store/slices/types";
 import { useState } from "react";
 import ViewComp from "./ViewComp";
+import UserView from "./UserView";
 
 const View = () => {
-  const [open, setOpen] = useState(true)
   const params = useParams();
+  console.log(params)
   const { data: users, isLoading } = useGetUsersQuery({ id: params.id })
   const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: params.id })
   const loading = isLoading || sLoading;
-  const item: school | afiliate | object = loading ? {} : users||schools
+  const item: school | afiliate | object = loading ? {} : schools || users;
   const itemType = users ? 'user' : 'school';
-
-  return  <ViewComp item={item} itemType={itemType} />
+  // return itemType === "user" ? <UserView item={item} /> : <ViewComp item={item} itemType={itemType} />
+  return <div>Doneeeeeee { JSON.stringify(item)}</div>
 }
 
-export default View
+export default View 

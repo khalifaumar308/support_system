@@ -43,7 +43,11 @@ const Topbar = () => {
   const handleOnSelect = (item) => {
     // the item selected
     // console.log(item)
-    navigate(`view/${item._id}`)
+    if (item.schoolsReferred) {
+      navigate(`/user/userview/${item._id}`)
+    } else {
+      navigate(`/user/schoolview/${item._id}`)
+    }
     
   }
 

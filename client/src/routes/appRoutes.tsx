@@ -1,6 +1,8 @@
 import { Tasks, Users, Dashboard, Schools, AddUser, UsersLayout, AddSchool } from "../pages";
 import View from "../components/View";
 import { RouteType } from "./config";
+import SchoolView from "../components/SchoolView";
+import UserView from "../components/UserView";
 
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -83,13 +85,29 @@ const appRoutes: RouteType[] = [
     }
   },
   {
-    path: "view/:id",
+    path: "view/:type/:id",
     element: <View />,
     state: "view",
     sidebarProps: {
       displayText: ""
     }
   },
+  {
+    path: "userview/:id",
+    element: <UserView />,
+    state: "userview",
+    sidebarProps: {
+      displayText: ""
+    }
+  },
+  {
+    path: "schoolview/:id",
+    element: <SchoolView />,
+    state: "schoolview",
+    sidebarProps: {
+      displayText: ""
+    }
+  }
 ]
 
 export default appRoutes

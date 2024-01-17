@@ -6,6 +6,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import { school } from "../store/slices/types";
 import { useCreateUserMutation } from "../store/slices/api/apiEndpoints";
 import { useNavigate } from "react-router-dom";
+import { Password } from "@mui/icons-material";
 
 
 const AddUser = () => {
@@ -66,6 +67,7 @@ const AddUser = () => {
       email: e.target.email.value,
       role: e.target.role.value,
       phone: e.target.phone.value,
+      password: e.target.password.value,
       schoolsReferred: referred
     }
     const returned = await createUser(data)
@@ -87,6 +89,10 @@ const AddUser = () => {
           </label>
           <label className="flex flex-col">Email
             <input name="email" type="email" placeholder="mail@mail.com"
+              className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
+          </label>
+          <label className="flex flex-col">Password
+            <input name="password" placeholder="********"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">

@@ -13,7 +13,7 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
     getUsers: builder.query<afiliate, lafiliate>({
       query: (credentials) => ({
         url: credentials.id ? `user/affiliates/${credentials.id}` : "user/affiliates/",
-        
+        providesTags: ["Users"],
       })
     }),
     createUser: builder.mutation<lschool, afiliate>({
@@ -21,18 +21,21 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
         url: "user/register",
         method: "POST",
         body: { ...credentials },
-      })
+      }),
+      invalidatesTags: ["Users"]
     }),
     createSchool: builder.mutation<lschool, school>({
       query: (credentials) => ({
         url: "user/schools",
         method: "POST",
         body: { ...credentials },
-      })
+      }),
+      invalidatesTags: ["Schools"]
     }),
     getSchools: builder.query<school[], lafiliate>({
       query: (credentials) => ({
         url: credentials.id ? `user/schools/${credentials.id}` : "user/schools/",
+        providesTags: ["Schools"],
       })
     }),
     updateSchool: builder.mutation<lschool, schoolUpdate>({
@@ -40,7 +43,8 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
         url: `user/schools/${credentials.id}`,
         method: "PUT",
         body: {...credentials}
-      })
+      }),
+      invalidatesTags: ["Schools"]
     })
   }),
 });
