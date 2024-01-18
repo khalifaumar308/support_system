@@ -1,4 +1,4 @@
-export type user = { name: string, email: string, token: 'string', role: string }
+export type user = { name: string, email: string, token: 'string', role: string, id:string }
 export type luser = { email: string, password: string };
 export type afiliate = {
   email: string;
@@ -40,4 +40,11 @@ export type schoolUpdate = {
 
 export type lschool = {
   message: string
+}
+
+export type visits = {
+  userId: string;
+  schoolName: string;
+  address: string;
+  comment: string;
 }

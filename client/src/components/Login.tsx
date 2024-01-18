@@ -23,13 +23,16 @@ const Login:React.FC = () => {
   const onSubmitHandler = async () => {
     const userData = await loginUser({ email: userId, password });
       if (!userData.error) {
-        dispatch(setCredentials({ ...userData }));
-        console.log(userData);
+        dispatch(setCredentials({ ...userData.data }));
         if (saveUser) {
-        localStorage.setItem("userData", JSON.stringify(userData));
+        localStorage.setItem("userData", JSON.stringify(userData.data));
         }
         console.log("login successfully", isError, error);
-        navigate('/user')
+        if (userData.data.role === "Affiliate") {
+          navigate("/affiliate")
+        } else {
+          navigate('/user')
+        }
       } else {
         const status = userData.error.originalStatus
             if (!status) {

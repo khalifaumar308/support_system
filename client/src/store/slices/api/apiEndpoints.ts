@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-import { user, luser, afiliate, lafiliate, school, lschool, schoolUpdate } from "../types";
+import { user, luser, afiliate, lafiliate, school, lschool, schoolUpdate, visits } from "../types";
 
 export const appApiEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -45,7 +45,21 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
         body: {...credentials}
       }),
       invalidatesTags: ["Schools"]
-    })
+    }),
+    createVisit: builder.mutation<lschool, visits>({
+      query: (credentials) => ({
+        url: "user/visits",
+        method: "POST",
+        body: { ...credentials },
+      }),
+      invalidatesTags: ["Visits"]
+    }),
+    getVisits: builder.query<{ visits: visits[] }, lafiliate>({
+      query: (credentials) => ({
+        url: credentials.id ? `user/visits/${credentials.id}` : "user/visits/",
+        providesTags: ["Visits"],
+      })
+    }),
   }),
 });
 
@@ -56,4 +70,6 @@ export const {
   useUpdateSchoolMutation,
   useGetSchoolsQuery,
   useCreateUserMutation,
+  useCreateVisitMutation,
+  useGetVisitsQuery,
 } = appApiEndpoints;
