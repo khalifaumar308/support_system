@@ -88,6 +88,7 @@ export const userLogin: RequestHandler = async (req, res) => {
 
 export const registerUser:RequestHandler = async (req, res) => {
   const { email, password, name, role } = req.body;
+  console.log(email, password, role)
   if (!email || !password)
     return res
       .status(400)
@@ -111,7 +112,7 @@ export const registerUser:RequestHandler = async (req, res) => {
       role
     });
 
-    if (role === "affiliate") {
+    if (role === "Affiliate") {
       const { phone, schoolsReferred } = req.body
       await AffiliateModel.create({
         email, name, phone, schoolsReferred

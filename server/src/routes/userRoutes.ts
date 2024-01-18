@@ -1,6 +1,7 @@
 import { getAffiliates } from "../controllers/affiliateController";
 import { userLogin, registerUser, refreshToken } from "../controllers/userController";
 import { updateSchool, getSchools, createSchool } from "../controllers/schoolController";
+import { createVisit, getVisits } from "../controllers/visitsController";
 import { Router } from "express";
 
 export const userRouter = Router()
@@ -13,3 +14,5 @@ userRouter
   .get('/affiliates/*', getAffiliates)
   .get('/schools/*', getSchools)
   .put('/schools/*', updateSchool)
+  .post('/visits', createVisit)
+  .get('/visits/*', getVisits)
