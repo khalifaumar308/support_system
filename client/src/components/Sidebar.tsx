@@ -2,12 +2,17 @@ import { Avatar, Drawer, List, Stack, Toolbar } from "@mui/material";
 import colorConfigs from "../configs/colorConfigs";
 import sizeConfigs from "../configs/sizeConfigs";
 import appRoutes from "../routes/adminRoutes";
+import affiliateRoutes from "../routes/affiliateRoutes";
 import SidebarItem from "./SidebarItem";
 import SidebarItemCollapse from "./SidebarItemCollapse";
 import { zenkleus } from "../assets";
+import { useLocation } from "react-router-dom";
 
 
 const Sidebar = () => {
+  const location = useLocation();
+  const { pathname } = location;
+  const routes = pathname.includes('affiliate')? affiliateRoutes: appRoutes
   return (
     <Drawer
       variant="permanent"
@@ -15,7 +20,7 @@ const Sidebar = () => {
         width: sizeConfigs.sidebar.width,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: sizeConfigs.sidebar.width,
+          width: sizeConfigs.sidebar.width, 
           boxSizing: "border-box",
           borderRight: "0px",
           backgroundColor: colorConfigs.sidebar.bg,
@@ -33,7 +38,7 @@ const Sidebar = () => {
             <Avatar sx={{width:"100%"}} src={zenkleus} />
           </Stack>
         </Toolbar>
-        {appRoutes.map((route, index) => {
+        {routes.map((route, index) => {
           return route.sidebarProps ? (
             route.child ? (
               <SidebarItemCollapse item={route} key={index} />

@@ -9,8 +9,7 @@ import ClientLogin from "./pages/ClientLogin";
 import PartnerLogin from "./pages/PartnerLogin";
 import MainLayout from "./components/layout/MainLayout";
 import View from "./components/adminComponents/View";
-import { routes } from "./routes";
-
+import { routes, afroutes } from "./routes";
 
 const App = () => {
   return (
@@ -23,6 +22,9 @@ const App = () => {
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/user" element={<MainLayout />} >
           {routes}
+        </Route>
+        <Route path="/affiliate" element={<MainLayout />} >
+          {afroutes}
         </Route>
         {/* <Route path="/view/*" element={<View />} ></Route> */}
       </Routes>

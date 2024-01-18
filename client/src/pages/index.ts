@@ -4,4 +4,7 @@ export {default as Schools} from './Schools'
 export {default as Dashboard} from './adminPages/Dashboard'
 export {default as AddUser} from './adminPages/AddUser'
 export { default as UsersLayout } from './adminPages/UsersLayout'
-export { default as AddSchool } from './adminPages/AddSchool'
+export { default as AddSchool } from './adminPages/AddSchool';
+export { default as AffiliateDashboard } from './affiliatePages/AffiliateDashboard';
+export { default as Visits } from './affiliatePages/Visits';
+export { default as MySchools } from './affiliatePages/MySchools';
