@@ -2,7 +2,7 @@ import React from 'react'
 
 const AffiliateDashboard = () => {
   return (
-    <div>AffiliateDashboard</div>
+    <div>موسى</div>
   )
 }
 

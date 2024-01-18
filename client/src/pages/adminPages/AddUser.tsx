@@ -10,6 +10,10 @@ import { Password } from "@mui/icons-material";
 
 
 const AddUser = () => {
+  type schoolReferred = {
+    schoolId: string,
+    percentage: number
+  };
   const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: false })
   const [createUser, { isLoading, isError }] = useCreateUserMutation();
   const [open, setOpen] = useState(true)
@@ -17,10 +21,18 @@ const AddUser = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [role, setRole] = useState('--Choose--')
-  const [referred, setReferred] = useState<string[]>([]);
+  const [referred, setReferred] = useState<schoolReferred[]>([]);
   const [toShow, setToShow] = useState<school[]>([]);
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
+  const [percentages, setPercentages] = useState({})
   const navigate = useNavigate()
+  // type afiliate = {
+  //   userId: Types.ObjectId,
+  //   email: string;
+  //   name: string;
+  //   phone: string;
+  //   schoolsReferred: [schoolReferred];
+  // };
 
   const items =sLoading?[]: [...schools.schools]
 
@@ -45,7 +57,7 @@ const AddUser = () => {
 
   const handleOnSelect = (item) => {
     // the item selected
-    setReferred([...referred, item._id])
+    setReferred([...referred, { schoolId:item._id, percentage:10 }])
     setToShow([...toShow, item])
   }
 
@@ -53,23 +65,31 @@ const AddUser = () => {
   }
 
   const referredDivs = toShow.map((item, id) => (
-    <div key={id} className="bg-red-100 flex mr-1 rounded-md shadow-sm shadow-slate-200">
-      <SchoolIcon />
-      <h2 className="ml-1 ">{item.name}</h2>
+    <div key={id} className="flex flex-row align-middle w-full mb-1">
+      <div className="bg-red-100 flex mr-1 rounded-md shadow-sm shadow-slate-200">
+        <SchoolIcon />
+        <h2 className="ml-1 ">{item.name}</h2>
+      </div>
+      <input className="ml-2 border-black border-2 p-1 " placeholder="percentage" onChange={(e)=>setPercentages({...percentages, [id]:e.target.value})}/>
     </div>
   ))
 
   const register = async (e:FormEvent) => {
     e.preventDefault()
     // console.log(toShow, referred)
+    const rfr: schoolReferred[] = [];
+    referred.forEach(({ schoolId }, id) => {
+      rfr.push({schoolId, percentage:percentages[id]})
+    })
     const data = {
       name: e.target.name.value,
       email: e.target.email.value,
       role: e.target.role.value,
       phone: e.target.phone.value,
       password: e.target.password.value,
-      schoolsReferred: referred
+      schoolsReferred: rfr
     }
+    // console.log(rfr)
     const returned = await createUser(data)
     if (returned.error) {
       console.log(returned.error)

@@ -20,10 +20,8 @@ const UserView = () => {
   const filterSchool = (id: string) => {
     return schools?.schools.filter(school=>school._id===id)[0]
   }
-  const schoolsReferred = affiliate.schoolsReferred[0].map((sid, id) => {
-    return (
-    <SchoolComp key={id} school={filterSchool(sid)} />)
-  })
+  console.log(affiliate, isLoading)
+  // const schoolsReferred = 
 
   return loading ? <div>Fetching data...</div>: (
     <div style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }} className="pl-[280px] flex items-center content-center fixed top-[-15%] left-0 right-0 bottom-0 bgc-[#3f33]"
@@ -44,7 +42,10 @@ const UserView = () => {
           </div>
           <div className="mt-3">
             <h2 className="mb-1">Schools Referred</h2>
-            {schoolsReferred}
+            {affiliate.schoolsReferred.map(({schoolId}, id) => {
+              return (
+                <SchoolComp key={id} school={filterSchool(schoolId)} />)
+            })}
           </div>
         </div>
         <button className="absolute top-2 right-2 bg-transparent border-0  text-lg cursor-pointer" >
