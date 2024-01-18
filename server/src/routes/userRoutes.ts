@@ -1,4 +1,4 @@
-import { getAffiliates } from "../controllers/affiliateController";
+import { getAffiliates, getAffiliateSchools } from "../controllers/affiliateController";
 import { userLogin, registerUser, refreshToken } from "../controllers/userController";
 import { updateSchool, getSchools, createSchool } from "../controllers/schoolController";
 import { createVisit, getVisits } from "../controllers/visitsController";
@@ -16,3 +16,4 @@ userRouter
   .put('/schools/*', updateSchool)
   .post('/visits', createVisit)
   .get('/visits/*', getVisits)
+  .get('/affiliate/*', getAffiliateSchools)

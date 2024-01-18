@@ -79,7 +79,7 @@ export const userLogin: RequestHandler = async (req, res) => {
     const { email, name } = foundUser;
     res
       .status(201)
-      .json({ accessToken, user: { email, role: foundUser.role, name } });
+      .json({ token:accessToken, email, role: foundUser.role, name, id:foundUser._id });
   } else {
     res.sendStatus(401);
   }
@@ -88,7 +88,6 @@ export const userLogin: RequestHandler = async (req, res) => {
 
 export const registerUser:RequestHandler = async (req, res) => {
   const { email, password, name, role } = req.body;
-  console.log(email, password, role)
   if (!email || !password)
     return res
       .status(400)
@@ -120,10 +119,10 @@ export const registerUser:RequestHandler = async (req, res) => {
     }
 
     console.log(`New ${role}: ${name} ${email} created!`);
-    res.status(201).json({ success: `New ${role} ${name} ${email} created!` });
+    return res.status(201).json({ success: `New ${role} ${name} ${email} created!` });
   } catch (err: unknown) {
     const message = err instanceof Error? err.message : `${err}`
-    res.status(500).json({ message });
+    return res.status(500).json({ message });
   }
 };
 

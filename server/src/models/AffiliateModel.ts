@@ -1,13 +1,26 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
-interface afiliate {
+type schoolReferred = {
+  schoolId: string,
+  percentage: Number,
+}
+
+type afiliate = {
+  userId: Types.ObjectId,
   email: string;
   name: string;
   phone: string;
-  schoolsReferred: [[string, number]];
+  schoolsReferred: [schoolReferred];
 };
 
+const schoolReferredSchema = new Schema<schoolReferred>({
+  schoolId: String,
+  percentage: Number
+})
+
+
 const affiliateSchema = new Schema<afiliate>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
   email: {
     type: String,
     required: true,
@@ -20,7 +33,7 @@ const affiliateSchema = new Schema<afiliate>({
     type: String,
     required: true,
   },
-  schoolsReferred: [ [String, Number] ],//[schoolName, percentageOffer] 
+  schoolsReferred: [ schoolReferredSchema ],//[schoolName, percentageOffer] 
 });
 
 export default model<afiliate>("Affiliate", affiliateSchema)
