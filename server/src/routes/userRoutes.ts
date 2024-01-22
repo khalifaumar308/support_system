@@ -4,8 +4,20 @@ import { updateSchool, getSchools, createSchool } from "../controllers/schoolCon
 import { createVisit, getVisits, deleteVisit, getSingleVisit } from "../controllers/visitsController";
 import { saveNotification, deleteUserNotifications, getUserNotifications } from "../controllers/notificationController";
 import { Router } from "express";
+import { sendMail } from "../services/email";
+import { Request, Response } from "express";
 
 export const userRouter = Router()
+
+const sendEMail = async (req:Request, res:Response) =>{
+  try {
+    sendMail(req.body)
+    return res.status(200).json({message:"email sent "})
+
+  } catch (error) {
+    return res.status(400).json({error})
+  }
+}
 
 userRouter
   .post('/login', userLogin)
@@ -24,3 +36,4 @@ userRouter
   .post('/notification', saveNotification)
   .get('/notification/*', getUserNotifications)
   .delete('/notification/*', deleteUserNotifications)
+  .post('/sendmail', sendEMail)

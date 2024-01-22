@@ -8,6 +8,7 @@ import http from 'http'
 
 import { logger } from './middleware/logRequests';
 import { userRouter } from './routes/userRoutes';
+// import { sendMail } from './services/email';
 
 dotenv.config();
 const allowedOrigins:string[] = ["http://127.0.0.1:5173", "http://localhost:5173"];
