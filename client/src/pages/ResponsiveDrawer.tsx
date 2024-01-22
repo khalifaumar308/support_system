@@ -14,6 +14,7 @@ import SidebarItem from '../components/SidebarItem';
 import SidebarItemCollapse from '../components/SidebarItemCollapse';
 import colorConfigs from '../configs/colorConfigs';
 import Topbar from '../components/Topbar';
+import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 import { zenkleus } from '../assets';
 import { useAppSelector } from '../store/hooks';
 import { selectCurrentUser } from '../store/slices/api/authSlice';
@@ -108,6 +109,7 @@ export default function ResponsiveDrawer() {
         </Toolbar>
         <Toolbar sx={{position:"relative", width:"100%"}}>
           <div className='text-orange-500 absolute right-8 flex gap-2 align-middle '>
+            <NotificationsNoneRoundedIcon />
             <AccountCircleIcon />
             {user.name}
           </div>
