@@ -1,5 +1,9 @@
 import { RouteType } from "./config";
 import { AffiliateDashboard, Visits, MySchools } from "../pages";
+import { UsersLayout } from "../pages";
+import AddSchool from "../pages/affiliatePages/AddSchool";
+import AddVisit from "../pages/affiliatePages/AddVisit";
+import VisitView from "../components/affiliate/VisitView";
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
@@ -17,21 +21,65 @@ const affiliateRoutes: RouteType[] = [
     }
   },
   {
-    path: "myschools",
-    element: <MySchools />,
-    state: "myschools",
+    path: "/affiliate/schools",
+    element: <UsersLayout />,
+    state: "schools",
     sidebarProps: {
-      displayText: "My Schools",
+      displayText: "Schools",
       icon: <SchoolOutlinedIcon />
-    }
+    },
+    child: [
+      {
+        path: "/affiliate/schools/all",
+        element: <MySchools />,
+        state: "myschools",
+        sidebarProps: {
+          displayText: "My Schools",
+        }
+      },
+      {
+        path: "/affiliate/schools/addschool",
+        element: <AddSchool />,
+        state: "all",
+        sidebarProps: {
+          displayText: "Add School",
+        }
+      }
+    ]
   },
   {
-    path: "visits",
-    element: <Visits />,
+    path: "/affiliate/visits",
+    element: <UsersLayout />,
     state: "visits",
     sidebarProps: {
       displayText: "Visits",
       icon: <DirectionsWalkRoundedIcon />
+    },
+    child: [
+      {
+        path: "/affiliate/visits/all",
+        element: <Visits />,
+        state: "myvisits",
+        sidebarProps: {
+          displayText: "My Visits",
+        }
+      },
+      {
+        path: "/affiliate/visits/addvisit",
+        element: <AddVisit />,
+        state: "addvisit",
+        sidebarProps: {
+          displayText: "New Visit",
+        }
+      }
+    ]
+  },
+  {
+    path: "/affiliate/visitsview/:id",
+    element: <VisitView />,
+    state: "visitview",
+    sidebarProps: {
+      displayText: ""
     }
   }
 ]

@@ -6,14 +6,15 @@ import { useNavigate } from "react-router-dom";
 
 const AddSchool = () => {
   const [open, setOpen] = useState<boolean>(true);
-  const [onboarded, SetOnBoarded] = useState<boolean>(false)
-  const [trained, SetTrained] = useState<boolean>(false)
+  const [onboarded, SetOnBoarded] = useState<boolean>(false);
+  const [trained, SetTrained] = useState<boolean>(false);
   const [createSchool, { isLoading, isError, Error }] = useCreateSchoolMutation()
   const [error, setError] = useState<string>('');
   const [term, setTerm] = useState<string>('---Choose---');
-  const [fterm, setFterm] = useState<boolean>(false)
-  const [sterm, setSterm] = useState<boolean>(false)
-  const [lterm, setLterm] = useState<boolean>(false)
+  const [fterm, setFterm] = useState<boolean>(false);
+  const [sterm, setSterm] = useState<boolean>(false);
+  const [lterm, setLterm] = useState<boolean>(false);
+  const [affiliatePercentage, setAffiliatePercentage] = useState<number>(0);
   const navigate = useNavigate()
 
   const paymentDivs = (
@@ -63,11 +64,9 @@ const AddSchool = () => {
       payment,
       package: e.target.package.value,
       currentTerm: term,
+      affiliatePercentage
     }
-
-    
     const returned = await createSchool(data)
-
     
     if (returned.error) {
       console.log( returned.error)
@@ -99,6 +98,10 @@ const AddSchool = () => {
         </label>
         <label className="flex flex-row items-center align-middle">Package(Amount per student)
           <input name="package" type="number" min={100} placeholder="0"
+            className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
+        </label>
+        <label className="flex flex-row items-center align-middle">Affiliate Percentage
+          <input name="perc" value={affiliatePercentage} onChange={(e)=>setAffiliatePercentage(Number(e.target.value))} type="number" min={0} placeholder="0"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">Current Term

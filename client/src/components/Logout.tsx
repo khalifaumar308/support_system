@@ -13,7 +13,7 @@ const Logout = () => {
     navigate("/login")
   }
   return (
-    <div onClick={handleClick} className="bg-slate-500 cursor-pointer m-8 flex flex-col items-center p-4 text-xl align-middle mt-20 text-red-700 h-24">
+    <div onClick={handleClick} className="bg-slate-500 cursor-pointer rounded-lg m-8 flex flex-col items-center p-4 text-xl align-middle mt-20 text-red-700 h-24">
       Logout
       <LogoutRoundedIcon />
     </div>

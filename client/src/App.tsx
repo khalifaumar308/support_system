@@ -9,9 +9,13 @@ import ClientLogin from "./pages/ClientLogin";
 import PartnerLogin from "./pages/PartnerLogin";
 import MainLayout from "./components/layout/MainLayout";
 import View from "./components/adminComponents/View";
+import ResponsiveDrawer from "./pages/ResponsiveDrawer";
 import { routes, afroutes } from "./routes";
+import { io } from "socket.io-client";
+import { useEffect } from "react";
 
 const App = () => {
+
   return (
     <Router>
       <Routes>
@@ -26,6 +30,7 @@ const App = () => {
         <Route path="/affiliate" element={<MainLayout />} >
           {afroutes}
         </Route>
+        <Route path="/drawer" element={<ResponsiveDrawer />} />
         {/* <Route path="/view/*" element={<View />} ></Route> */}
       </Routes>
     </Router>

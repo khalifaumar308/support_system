@@ -52,35 +52,46 @@ const Topbar = () => {
   }
 
   const handleOnFocus = () => {
-    console.log('Focused')
   }
-  console.log(isError)
   return (
     isLoading ? (<div className="ml-[270px]">Loading...</div>) : (
       isError ? (<div className="ml-[270px]">Error</div>):
-    <AppBar
-      position="fixed"
-      sx={{
-        width: `calc(100% - ${sizeConfigs.sidebar.width})`,
-        ml: sizeConfigs.sidebar.width,
-        mt: 1,
-        boxShadow: "unset",
-        backgroundColor: colorConfigs.topbar.bg,
-        color: colorConfigs.topbar.color
-      }}
-    >
-        <ReactSearchAutocomplete
-          items={items}
-          onSearch={handleOnSearch}
-          onHover={handleOnHover}
-          onSelect={handleOnSelect}
-          onFocus={handleOnFocus}
-          autoFocus
-          formatResult={formatResult}
-          fuseOptions={{ keys: ['name', 'address'] }}
-        />
-    </AppBar>)
-  );
+    // <AppBar
+    //   sx={{
+    //       width: {xs:`calc(100% - ${sizeConfigs.sidebar.width})`},
+    //       ml: sizeConfigs.sidebar.width,
+    //       mt: 1,
+    //       mr: 1,
+    //       boxShadow: "unset",
+    //       backgroundColor: colorConfigs.topbar.bg,
+    //       color: colorConfigs.topbar.color
+    //   }}
+    // >
+    //     <ReactSearchAutocomplete
+    //       items={items}
+    //       onSearch={handleOnSearch}
+    //       onHover={handleOnHover}
+    //       onSelect={handleOnSelect}
+    //       onFocus={handleOnFocus}
+    //       autoFocus
+    //       formatResult={formatResult}
+    //       fuseOptions={{ keys: ['name', 'address'] }}
+    //     />
+        // </AppBar>)
+        <div className="w-[100%] sm:w-[320px]">
+            <ReactSearchAutocomplete
+              items={items}
+              onSearch={handleOnSearch}
+              onHover={handleOnHover}
+              onSelect={handleOnSelect}
+              onFocus={handleOnFocus}
+              autoFocus
+              formatResult={formatResult}
+              fuseOptions={{ keys: ['name', 'address'] }}
+            />
+        </div>
+    ))
+      
 };
 
 export default Topbar;

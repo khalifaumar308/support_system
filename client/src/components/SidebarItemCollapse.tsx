@@ -40,7 +40,7 @@ const SidebarItemCollapse = ({ item }: Props) => {
           }}
         >
           <ListItemIcon sx={{
-            color: colorConfigs.sidebar.color
+            // color: colorConfigs.sidebar.color
           }}>
             {item.sidebarProps.icon && item.sidebarProps.icon}
           </ListItemIcon>

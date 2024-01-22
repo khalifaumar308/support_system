@@ -173,7 +173,7 @@ function SchoolView() {
 
   let changeItem
 
-  if ((changeParam === 'students') || (changeParam === "package")) {
+  if ((changeParam === 'students') || (changeParam === "package") || (changeParam === "affiliatePercentage")) {
     changeItem = (
       <input type="number" value={changeValue} onChange={(e) => setChangeValue(e.target.value)} className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
     )
@@ -210,6 +210,7 @@ function SchoolView() {
           <option value="---Choose---">--Choose---</option>
           <option value="students">Students</option>
           <option value="address">Address</option>
+          <option value="affiliatePercentage">Affiliate Perc</option>
           {!item.onboarded &&
             <>
               <option value="onboarded">OnBoarded</option>
