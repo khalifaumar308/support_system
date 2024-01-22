@@ -104,7 +104,7 @@ export const registerUser:RequestHandler = async (req, res) => {
     const hashedPwd = await bcrypt.hash(password, 10);
 
     //create and store the new user
-    await UsersModel.create({
+    const user = await UsersModel.create({
       email,
       password: hashedPwd,
       name,
@@ -114,7 +114,7 @@ export const registerUser:RequestHandler = async (req, res) => {
     if (role === "Affiliate") {
       const { phone, schoolsReferred } = req.body
       await AffiliateModel.create({
-        email, name, phone, schoolsReferred
+        email, name, phone, schoolsReferred, userId:user._id
       });
     }
 

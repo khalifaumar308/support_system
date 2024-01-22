@@ -22,6 +22,7 @@ export type school = {
   package: number;
   currentTerm: string;
   payment: boolean[];
+  affiliatePercentage: number;
   _id?: string;
 }
 
@@ -35,7 +36,8 @@ export type schoolUpdate = {
   address?: string;
   package?: number;
   currentTerm?: string;
-  payment?: boolean[]
+  payment?: boolean[];
+  affiliatePercentage?: number;
 }
 
 export type lschool = {
@@ -47,4 +49,20 @@ export type visits = {
   schoolName: string;
   address: string;
   comment: string;
+}
+
+
+
+export type affilaiteSchool = {
+  id: string,
+  schoolData: school
+}
+
+export type notification = {
+  recieverId: string;
+  senderId: string;
+  url: string;
+  type: string;
+  status: string;
+  senderName: string;
 }

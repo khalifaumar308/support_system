@@ -12,7 +12,8 @@ interface school {
   trainDate: Date;
   address: string;
   package: number;
-  payment: boolean[]
+  payment: boolean[];
+  affiliatePercentage: number;
 };
 
 interface schoolMethods {
@@ -25,14 +26,18 @@ const schoolSchema = new Schema<school, schoolModel, schoolMethods>({
   name: String,
   email: String,
   address: String,
-  onboarded: Boolean,
-  trained: Boolean,
+  onboarded: { type:Boolean, default:false },
+  trained: { type:Boolean, default:false },
   onboardDate: Date,
   trainDate: Date,
   currentTerm: String,
   students: Number,
-  package: Number,
-  payment: [Boolean]
+  package: { type:Number, default:0 },
+  payment: [Boolean],
+  affiliatePercentage: {
+    type: Number,
+    default:0
+  }
 });
 
 schoolSchema.method("totalPayable", function totalPayable() {
