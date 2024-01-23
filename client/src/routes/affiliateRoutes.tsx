@@ -4,6 +4,7 @@ import { UsersLayout } from "../pages";
 import AddSchool from "../pages/affiliatePages/AddSchool";
 import AddVisit from "../pages/affiliatePages/AddVisit";
 import VisitView from "../components/affiliate/VisitView";
+import SchoolView from "../components/affiliate/SchoolView";
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
@@ -75,13 +76,14 @@ const affiliateRoutes: RouteType[] = [
     ]
   },
   {
-    path: "/affiliate/visitsview/:id",
-    element: <VisitView />,
-    state: "visitview",
+    path: "/affiliate/schoolview/:id/:percentage",
+    element: <SchoolView />,
+    state: "schoolview",
     sidebarProps: {
       displayText: ""
     }
-  }
+  },
+
 ]
 
 export default affiliateRoutes

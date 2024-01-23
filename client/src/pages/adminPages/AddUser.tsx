@@ -20,7 +20,7 @@ const AddUser = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [role, setRole] = useState('--Choose--')
+  const [role, setRole] = useState('--Choose--');
   const [referred, setReferred] = useState<schoolReferred[]>([]);
   const [toShow, setToShow] = useState<school[]>([]);
   const [error, setError] = useState('');

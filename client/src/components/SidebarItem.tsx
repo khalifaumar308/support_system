@@ -13,6 +13,8 @@ const SidebarItem = ({ item }: Props) => {
   const { appState } = useAppSelector((state: RootState) => state.appState);
   return (
     item.sidebarProps && item.path ? (
+      item.sidebarProps.displayText ? (
+        
       <ListItemButton
         component={Link}
         to={item.path}
@@ -32,6 +34,25 @@ const SidebarItem = ({ item }: Props) => {
         </ListItemIcon>
         {item.sidebarProps.displayText}
       </ListItemButton>
+      ) : (
+          <ListItemButton
+            sx={{
+              "&: hover": {
+                backgroundColor: colorConfigs.sidebar.hoverBg
+              },
+              backgroundColor: appState === item.state ? colorConfigs.sidebar.activeBg : "unset",
+              paddingY: "12px",
+              paddingX: "24px"
+            }}
+          >
+            <ListItemIcon sx={{
+              // color: colorConfigs.sidebar.color
+            }}>
+              {item.sidebarProps.icon && item.sidebarProps.icon}
+            </ListItemIcon>
+            {item.sidebarProps.displayText}
+          </ListItemButton>
+      )
     ) : null
   );
 };
