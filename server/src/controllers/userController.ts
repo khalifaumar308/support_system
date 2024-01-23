@@ -3,6 +3,7 @@ import AffiliateModel from "../models/AffiliateModel";
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import { sendMail } from "../services/email";
 
 interface tokenDecode {
   email: string;
@@ -116,6 +117,7 @@ export const registerUser:RequestHandler = async (req, res) => {
       await AffiliateModel.create({
         email, name, phone, schoolsReferred, userId:user._id
       });
+      await sendMail({email, name, password})
     }
 
     console.log(`New ${role}: ${name} ${email} created!`);

@@ -42,7 +42,7 @@ let onlineUsers:onlineUser[] = [];
 const addNewUser = (userId:string, socketId:string, name:string) => {
   !onlineUsers.some((user) => user.userId === userId) &&
     onlineUsers.push({ userId, socketId, name });
-  console.log(onlineUsers)
+  // console.log(onlineUsers)
 };
 
 const removeUser = (socketId:string) => {
@@ -87,7 +87,6 @@ const connectDB = async () => {
 io.on("connection", (socket) => {
   socket.on("newUser", (data) => {
     addNewUser(data.id, socket.id, data.name);
-    console.log(onlineUsers)
   });
 
   socket.on("sendNotification", ({ senderId, recieverId, type, url, senderName }) => {

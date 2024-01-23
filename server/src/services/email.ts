@@ -8,17 +8,17 @@ import path from 'path';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAILPASS
+    user: 'khalifaumar308@gmail.com',
+    pass: 'vcti wczy xcvc bytc'
   }
 });
-const handlebarOptions = {
-    viewEngine: {
-        partialsDir: path.resolve('./views/'),
-        defaultLayout: false,
-    },
-    viewPath: path.resolve('./views/'),
-};
+// const handlebarOptions = {
+//     viewEngine: {
+//         partialsDir: path.resolve('./views/'),
+//         defaultLayout: false,
+//     },
+//     viewPath: path.resolve('./views/'),
+// };
 
 // transporter.use('compile', hbs(handlebarOptions))
 transporter.use('compile', hbs({
@@ -32,17 +32,18 @@ transporter.use('compile', hbs({
     extName: '.hbs'
 }));
 
-export const sendMail = (recipeint: { email: string, adminName: string, schoolName: string }) => {
-  console.log(process.env.EMAIL, process.env.EMAIL)
+export const sendMail = (recipeint: { email: string, name: string, password:string }) => {
+  console.log(process.env.EMAIL, process.env.EMAILPASS)
   const mailOptions = {
     from: process.env.EMAIL,
     template: "email",
     to: recipeint.email,
-    subject: `Welcome to Zenkleus, ${recipeint.schoolName}`,
+    subject: `Welcome to Skolbod`,
     context: {
       email: recipeint.email,
-      name: recipeint.adminName,
+      name: recipeint.name,
       link: " http://localhost:5173/admin-login",
+      password: recipeint.password
     },
   };
   try { 
