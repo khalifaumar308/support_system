@@ -5,38 +5,39 @@ import sizeConfigs from "../../configs/sizeConfigs";
 // import Sidebar from "../Sidebar";
 // import Topbar from "../Topbar";
 import ResponsiveDrawer from "../../pages/ResponsiveDrawer";
-import io from 'socket.io-client';
-import { useEffect } from "react";
+// import io from 'socket.io-client';
+// import { useEffect } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { selectCurrentUser } from "../../store/slices/api/authSlice";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { SocketContext } from "../../context/socket";
 
 // const socket = io.connect("")
 const MainLayout = () => {
   const user = useAppSelector(selectCurrentUser);
-  const [socket, setSocket] = useState(null);
-  console.log(user)
+  // const [socket, setSocket] = useState(null);
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
-    const socketInstance = io('http://localhost:3000');
-    setSocket(socketInstance);
+    // const socketInstance = io('http://localhost:3000');
+    // setSocket(socketInstance);
 
     // listen for events emitted by the server
-    socketInstance.on('connect', () => {
+    socket.on('connect', () => {
       console.log('Connected to server');
     });
-    socketInstance?.emit("newUser", user);
+    socket?.emit("newUser", user);
 
-    // socketInstance.on('message', (data) => {
+    // socket.on('message', (data) => {
     //   console.log(`Received message: ${data}`);
     // });
 
     return () => {
-      if (socketInstance) {
-        socketInstance.disconnect();
-      }
+      // if (socket) {
+      //   socket.disconnect();
+      // }
     };
-  }, [user]);
+  }, [user, socket]);
 
   return (
     <Box sx={{ display: "flex" }}>

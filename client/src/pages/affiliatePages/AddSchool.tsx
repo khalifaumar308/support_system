@@ -1,12 +1,14 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useState, useCallback, useContext } from "react"
 import Modal from "../../components/Modal"
 import { useCreateAffiliateSchoolMutation } from "../../store/slices/api/apiEndpoints";
 import { school } from "../../store/slices/types";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import { selectCurrentUser } from "../../store/slices/api/authSlice";
+import { SocketContext } from "../../context/socket";
 
 const AddSchool = () => {
+  const socket = useContext(SocketContext);
   const user = useAppSelector(selectCurrentUser);
   const userId = user.id
   const [open, setOpen] = useState<boolean>(true);
@@ -14,7 +16,16 @@ const AddSchool = () => {
   const [error, setError] = useState<string>('');
   const [term, setTerm] = useState<string>('---Choose---');
   const navigate = useNavigate()
-
+  
+  const sendNotification = useCallback(() => {
+    socket.emit('sendNotification', {
+      sendId: user.id,
+      recieverId: "65a94085d9225e23a40f683b",
+      type: "School Registered",
+      senderName: user.name,
+      url:''
+    })
+  },[socket, user])
 
   const register = async (e: FormEvent) => {
     e.preventDefault()
@@ -32,6 +43,7 @@ const AddSchool = () => {
       setError('School Creation Failed')
     } else {
       setError('School Created success')
+      sendNotification()
       setTimeout(() => (navigate('/affiliate/schools/all')), 3000)
     }
   }

@@ -22,10 +22,13 @@ import Logout from '../components/Logout';
 import affiliateRoutes from '../routes/affiliateRoutes';
 import adminRoutes from '../routes/adminRoutes';
 import { useLocation } from 'react-router-dom';
+import { SocketContext } from '../context/socket';
+import { useContext, useEffect } from 'react';
 
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
+  const socket = useContext(SocketContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const width = useRef([window.innerWidth])
@@ -33,7 +36,18 @@ export default function ResponsiveDrawer() {
   const { pathname } = location;
   const routes = pathname.includes('affiliate') ? affiliateRoutes : adminRoutes
 
-  const user = useAppSelector(selectCurrentUser)
+  const user = useAppSelector(selectCurrentUser);
+
+  const handleNotification = (data) => {
+    alart(data.type)
+  };
+
+  useEffect(() => {
+    socket.on('recieveNotification', (data) => {
+      handleNotification(data);
+      return 
+    })
+  }, [socket])
   
   const handleDrawerClose = () => {
     setIsClosing(true);

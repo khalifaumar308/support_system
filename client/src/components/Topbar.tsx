@@ -1,15 +1,5 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
-import Input from '@mui/material/Input';
-import { useState } from "react";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
-import colorConfigs from "../configs/colorConfigs";
-import sizeConfigs from "../configs/sizeConfigs";
 import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEndpoints";
 
 

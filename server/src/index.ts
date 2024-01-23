@@ -86,14 +86,17 @@ const connectDB = async () => {
 
 io.on("connection", (socket) => {
   socket.on("newUser", (data) => {
+    // console.log(data)
     addNewUser(data.id, socket.id, data.name);
+    console.log(onlineUsers)
   });
 
   socket.on("sendNotification", ({ senderId, recieverId, type, url, senderName }) => {
     const receiver = getUser(recieverId);
-    // console.log(receiver,receiverName)
+    console.log(recieverId, 'idddd')
     if (receiver) {
-      io.to(receiver.socketId).emit("getNotification", {
+      console.log(receiver, 'online')
+      io.to(receiver.socketId).emit("recieveNotification", {
         senderName,
         type,
         url,

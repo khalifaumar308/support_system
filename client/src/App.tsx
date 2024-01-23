@@ -11,29 +11,29 @@ import MainLayout from "./components/layout/MainLayout";
 import View from "./components/adminComponents/View";
 import ResponsiveDrawer from "./pages/ResponsiveDrawer";
 import { routes, afroutes } from "./routes";
-import { io } from "socket.io-client";
-import { useEffect } from "react";
+import { SocketContext, socket } from './context/socket';
 
 const App = () => {
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Starter />} />
-        <Route path="/login" element={<StaffLogin />} />
-        <Route path="/client/login" element={<ClientLogin />} />
-        <Route path="/partner/login" element={<PartnerLogin />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-        <Route path="/user" element={<MainLayout />} >
-          {routes}
-        </Route>
-        <Route path="/affiliate" element={<MainLayout />} >
-          {afroutes}
-        </Route>
-        <Route path="/drawer" element={<ResponsiveDrawer />} />
-        {/* <Route path="/view/*" element={<View />} ></Route> */}
-      </Routes>
-    </Router>
+    <SocketContext.Provider value={socket}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Starter />} />
+          <Route path="/login" element={<StaffLogin />} />
+          <Route path="/client/login" element={<ClientLogin />} />
+          <Route path="/partner/login" element={<PartnerLogin />} />
+          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+          <Route path="/user" element={<MainLayout />} >
+            {routes}
+          </Route>
+          {/* <Route path="/view/*" element={<View />} ></Route> */}
+            <Route path="/affiliate" element={<MainLayout />} >
+              {afroutes}
+            </Route>
+            <Route path="/drawer" element={<ResponsiveDrawer />} />
+        </Routes>
+      </Router>
+    </SocketContext.Provider>
   );
 }
 
