@@ -13,7 +13,7 @@ const MySchools = () => {
 
   return (isLoading? (<div>Loading...</div>):
     <div>{schools.schools.map((school, id) => (
-      <div onClick={() => navigate(`/affiliate/schoolview/${school._id}/${school.percentage}`)} className="bg-[#2d3e57] text-white mb-1 cursor-pointer p-2 flex mr-1 rounded-md shadow-sm shadow-black">
+      <div onClick={() => navigate(`/affiliate/schoolview/${school._id}/${school.percentage}`)} className="bg-[#2d3e57] sm:w-[50%] sm:ml-[5%] text-white mb-1 cursor-pointer p-2 flex mr-1 rounded-md shadow-sm shadow-black">
         <SchoolIcon />
         <h2 className="ml-1 ">{school.name}</h2>
       </div>

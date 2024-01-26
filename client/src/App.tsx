@@ -12,10 +12,12 @@ import View from "./components/adminComponents/View";
 import ResponsiveDrawer from "./pages/ResponsiveDrawer";
 import { routes, afroutes } from "./routes";
 import { SocketContext, socket } from './context/socket';
+import { Notifications } from 'react-push-notification';
 
 const App = () => {
   return (
     <SocketContext.Provider value={socket}>
+      <Notifications />
       <Router>
         <Routes>
           <Route path="/" element={<Starter />} />

@@ -95,7 +95,7 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Notifications"]
     }),
-    getNotifications: builder.query<{ schools: notification[] }, lafiliate>({
+    getNotifications: builder.query<{ notifications: notification[] }, lafiliate>({
       query: (credentials) => ({
         url: `user/notification/${credentials.id}`,
         providesTags: ["Notifications"],

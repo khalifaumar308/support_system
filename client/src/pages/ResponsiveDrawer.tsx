@@ -12,11 +12,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState, useRef } from 'react';
 import SidebarItem from '../components/SidebarItem';
 import SidebarItemCollapse from '../components/SidebarItemCollapse';
-import colorConfigs from '../configs/colorConfigs';
 import Topbar from '../components/Topbar';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 import { zenkleus } from '../assets';
-import { useAppSelector } from '../store/hooks';
 import { selectCurrentUser } from '../store/slices/api/authSlice';
 import Logout from '../components/Logout';
 import affiliateRoutes from '../routes/affiliateRoutes';
@@ -24,10 +22,17 @@ import adminRoutes from '../routes/adminRoutes';
 import { useLocation } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import { useContext, useEffect } from 'react';
+import { useGetNotificationsQuery, useDeleteNotificationMutation } from '../store/slices/api/apiEndpoints';
+import { useSelector } from 'react-redux';
+import Popover from '@mui/material/Popover';
+import School from '@mui/icons-material/School';
 
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
+  const user = useSelector(selectCurrentUser);
+  const { data:notifications, isLoading, isFetching, refetch } = useGetNotificationsQuery({ id: user.id || '' });
+  const notificationLoading = isLoading || isFetching;
   const socket = useContext(SocketContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -35,19 +40,30 @@ export default function ResponsiveDrawer() {
   const location = useLocation();
   const { pathname } = location;
   const routes = pathname.includes('affiliate') ? affiliateRoutes : adminRoutes
+  const notificationNumber = notificationLoading ? '...' : notifications?.notifications.length
+  const userNotifications = notificationLoading ? [] : notifications?.notifications;
+  console.log(userNotifications)
 
-  const user = useAppSelector(selectCurrentUser);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleNotification = (data) => {
-    alart(data.type)
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
   };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   useEffect(() => {
     socket.on('recieveNotification', (data) => {
-      handleNotification(data);
-      return 
+      alert(data.type)
+      refetch()
+      return
     })
-  }, [socket])
+  }, [socket, refetch]);
   
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -100,7 +116,7 @@ export default function ResponsiveDrawer() {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           bgcolor: 'white',
-          // alignContent: 'center',
+          alignContent: 'center',
           display: 'flex',
           flexDirection:'row'
         }}
@@ -108,7 +124,6 @@ export default function ResponsiveDrawer() {
         {width.current[0] < 650 && (
           <Toolbar>
             <IconButton
-              color="black"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
@@ -121,7 +136,31 @@ export default function ResponsiveDrawer() {
         <Toolbar sx={{backgroundColor:'white',width:"100%"}} >
           <Topbar />
         </Toolbar>
-        <Toolbar sx={{position:"relative", width:"100%"}}>
+        <Toolbar sx={{ position: "relative", width: "100%" }}>
+          <div className='absolute text-xs text-white bg-red-600 p-1 z-10 right-[9.5rem] top-2 rounded-full'>
+            <button onClick={handleClick}>{ notificationNumber }</button>
+          </div>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <div className='p-2'>{userNotifications?.map(({ senderName, type }, id) => {
+              return (
+                <div key={id} className='flex gap-1 border-b-2 border-gray-400'>
+                  <School />
+                  <h2>{senderName}:</h2>
+                  <p>{type}</p>
+                </div>
+              )
+            })}
+            </div>
+          </Popover>
           <div className='text-orange-500 absolute right-8 flex gap-2 align-middle '>
             <NotificationsNoneRoundedIcon />
             <AccountCircleIcon />

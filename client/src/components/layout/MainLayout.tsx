@@ -19,23 +19,11 @@ const MainLayout = () => {
   const socket = useContext(SocketContext);
 
   useEffect(() => {
-    // const socketInstance = io('http://localhost:3000');
-    // setSocket(socketInstance);
-
-    // listen for events emitted by the server
     socket.on('connect', () => {
       console.log('Connected to server');
     });
     socket?.emit("newUser", user);
-
-    // socket.on('message', (data) => {
-    //   console.log(`Received message: ${data}`);
-    // });
-
     return () => {
-      // if (socket) {
-      //   socket.disconnect();
-      // }
     };
   }, [user, socket]);
 
