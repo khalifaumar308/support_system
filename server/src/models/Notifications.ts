@@ -1,11 +1,10 @@
 import { Schema, Types, model } from "mongoose";
 
-type notification = {
+export type notification = {
   recieverId: Types.ObjectId;
   senderId: Types.ObjectId;
   url: string;
   type: string;
-  status: string;
   senderName: string;
 }
 
@@ -18,10 +17,6 @@ const notificationSchema = new Schema<notification>({
   },
   url: String,
   type: String,
-  status: {
-    type: String,
-    default:"Unread",
-  },
   senderName: String,
 }, { timestamps: true });
 

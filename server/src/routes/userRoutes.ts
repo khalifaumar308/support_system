@@ -3,6 +3,7 @@ import { userLogin, registerUser, refreshToken } from "../controllers/userContro
 import { updateSchool, getSchools, createSchool } from "../controllers/schoolController";
 import { createVisit, getVisits, deleteVisit, getSingleVisit } from "../controllers/visitsController";
 import { saveNotification, deleteUserNotifications, getUserNotifications } from "../controllers/notificationController";
+import { getMessages, updateStatus, deleteMessage } from "../controllers/messageController";
 import { Router } from "express";
 import { sendMail } from "../services/email";
 import { Request, Response } from "express";
@@ -37,3 +38,6 @@ userRouter
   .get('/notification/*', getUserNotifications)
   .delete('/notification/*', deleteUserNotifications)
   .post('/sendmail', sendEMail)
+  .get('/message/*', getMessages)
+  .delete('/message/*', deleteMessage)
+  .put('/message/*', updateStatus)

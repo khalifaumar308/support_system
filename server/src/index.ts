@@ -1,6 +1,7 @@
 import cors from 'cors';
 import mongoose from "mongoose";
 import express, { Express, Request, Response, RequestHandler } from "express";
+import { saveSingleNotification } from './controllers/notificationController';
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { Server } from 'socket.io';
@@ -8,6 +9,7 @@ import http from 'http'
 
 import { logger } from './middleware/logRequests';
 import { userRouter } from './routes/userRoutes';
+import { saveMessage } from './controllers/messageController';
 // import { sendMail } from './services/email';
 
 dotenv.config();
@@ -86,37 +88,23 @@ const connectDB = async () => {
 
 io.on("connection", (socket) => {
   socket.on("newUser", (data) => {
-    // console.log(data)
     addNewUser(data.id, socket.id, data.name);
-    console.log(onlineUsers)
   });
 
-  socket.on("sendNotification", ({ senderId, recieverId, type, url, senderName }) => {
-    const receiver = getUser(recieverId);
-    console.log(recieverId, 'idddd')
+  socket.on("sendMessage", (data) => {
+    const receiver = getUser(data.recieverId);
     if (receiver) {
       console.log(receiver, 'online')
-      io.to(receiver.socketId).emit("recieveNotification", {
-        senderName,
-        type,
-        url,
-      });
-    }
+      io.to(receiver.socketId).emit("recieveMessage", data);
+    };
+    saveMessage(data)
+    // saveSingleNotification({senderId, recieverId, type, url, senderName})
   });
-
-  // socket.on("sendText", ({ senderName, receiverName, text }) => {
-  //   const receiver = getUser(receiverName);
-  //   io.to(receiver.socketId).emit("getText", {
-  //     senderName,
-  //     text,
-  //   });
-  // });
 
   socket.on("disconnect", () => {
-    removeUser(socket.id);
+    removeUser(socket.id);  
   });
 });
-
 connectDB()
 
 mongoose.connection.once("open", () => {
