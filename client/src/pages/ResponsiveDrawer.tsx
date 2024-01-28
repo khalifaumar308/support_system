@@ -22,7 +22,7 @@ import adminRoutes from '../routes/adminRoutes';
 import { useLocation } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import { useContext, useEffect } from 'react';
-import { useGetNotificationsQuery, useDeleteNotificationMutation } from '../store/slices/api/apiEndpoints';
+import { useGetNotificationsQuery } from '../store/slices/api/apiEndpoints';
 import addNotification from 'react-push-notification';
 import { useSelector } from 'react-redux';
 import Popover from '@mui/material/Popover';

@@ -1,6 +1,7 @@
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import { useNavigate } from "react-router-dom";
 import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEndpoints";
+import { afiliate, school } from '../store/slices/types';
 
 
 const Topbar = () => {
@@ -9,10 +10,10 @@ const Topbar = () => {
   const loading = isLoading || sLoading
   const navigate = useNavigate()
 
-  const formatResult = (item) => {
+  const formatResult = (item:afiliate|school) => {
     return (
       <>
-        <span style={{ display: 'block', textAlign: 'left' }}>id: {item.id}</span>
+        <span style={{ display: 'block', textAlign: 'left' }}>id: {item._id}</span>
         <span style={{ display: 'block', textAlign: 'left' }}>name: {item.name}</span>
       </>
     )
@@ -20,21 +21,21 @@ const Topbar = () => {
 
   const items = loading?[]:isError?[]:users && schools?[...users.affiliates, ...schools.schools]: []
 
-  const handleOnSearch = (string, results) => {
+  const handleOnSearch = (string:  string , results:(afiliate|school)[]) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
     console.log(string, results)
   }
 
-  const handleOnHover = (result) => {
+  const handleOnHover = (result: afiliate | school) => {
     // the item hovered
     console.log(result)
   }
 
-  const handleOnSelect = (item) => {
+  const handleOnSelect = (item:afiliate|school) => {
     // the item selected
     // console.log(item)
-    if (item.schoolsReferred) {
+    if ('schoolsReferred' in item) {
       navigate(`/user/userview/${item._id}`)
     } else {
       navigate(`/user/schoolview/${item._id}`)

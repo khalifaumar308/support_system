@@ -13,9 +13,13 @@ const AddSchool = () => {
   const user = useAppSelector(selectCurrentUser);
   const userId = user.id
   const [open, setOpen] = useState<boolean>(true);
-  const [createAffiliateSchool, { isLoading, isError, Error }] = useCreateAffiliateSchoolMutation();
+  const [createAffiliateSchool] = useCreateAffiliateSchoolMutation();
   const [error, setError] = useState<string>('');
   const [term, setTerm] = useState<string>('---Choose---');
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
+  const [students, setStudents] = useState(0);
   const navigate = useNavigate();
   const [schoolData, setSchoolData] = useState({
     0: false, 1: false, 2: false, 3: false, 4: false
@@ -36,14 +40,14 @@ const AddSchool = () => {
     e.preventDefault()
 
     const data: school = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      address: e.target.address.value,
-      students: e.target.students.value,
+      name,
+      email,
+      address,
+      students,
       currentTerm: term,
     }
-    const returned = await createAffiliateSchool({id:userId, schoolData:data})
-    if (returned.error) {
+    const returned = await createAffiliateSchool({id:userId||'', schoolData:data})
+    if ('error' in returned) {
       console.log(returned.error)
       setError('School Creation Failed')
     } else {
@@ -67,19 +71,19 @@ const AddSchool = () => {
     <Modal onClose={() => setOpen(false)}>
       <form className="flex flex-col" onSubmit={register}>
         <label className="flex flex-row items-center ">School Name
-          <input name="name" placeholder="name"
+          <input value={name} onChange={(e)=>setName(e.target.value)} name="name" placeholder="name"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
-        <label className="flex flex-row items-center align-middle">School Email
-          <input name="email" type="email" placeholder="mail@mail.com"
+        <label  className="flex flex-row items-center align-middle">School Email
+          <input value={email} onChange={(e) => setEmail(e.target.value)} name="email" type="email" placeholder="mail@mail.com"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">School Address
-          <input name="address" placeholder="Address" type="address"
+          <input value={address} onChange={(e) => setAddress(e.target.value)} name="address" placeholder="Address" type="address"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">Number of Students
-          <input name="students" type="number" min={0} placeholder="0"
+          <input value={students} onChange={(e) => setStudents(Number(e.target.value))} name="students" type="number" min={0} placeholder="0"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">Current Term

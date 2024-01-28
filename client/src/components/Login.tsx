@@ -20,14 +20,16 @@ const Login = () => {
   }, [userId, password]);
 
   useEffect(() => {
-    if (isError && 'status' in error) {
-      const status = error.status
-      if (status === 400) {
-        setErrMsg("Missing Email or Password");
-      } else if (status === 401) {
-        setErrMsg("Unauthorized");
-      } else {
-        setErrMsg("Login Failed");
+    if (isError) {
+      if (error && 'status' in error) {
+        const status = error.status
+        if (status === 400) {
+          setErrMsg("Missing Email or Password");
+        } else if (status === 401) {
+          setErrMsg("Unauthorized");
+        } else {
+          setErrMsg("Login Failed");
+        }
       }
     }
   }, [isError, error])
