@@ -1,4 +1,4 @@
-import { Tasks, Users, Dashboard, Schools, AddUser, UsersLayout, AddSchool } from "../pages";
+import { Tasks, Users, Dashboard, Schools, AddUser, UsersLayout, AddSchool, Messages } from "../pages";
 import View from "../components/adminComponents/View";
 import { RouteType } from "./config";
 import SchoolView from "../components/adminComponents/SchoolView";
@@ -7,6 +7,7 @@ import UserView from "../components/adminComponents/UserView";
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import MessageIcon from '@mui/icons-material/Message';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 
@@ -82,6 +83,15 @@ const adminRoutes: RouteType[] = [
     sidebarProps: {
       displayText: "Tasks",
       icon: <AssignmentTurnedInOutlinedIcon />
+    }
+  },
+  {
+    path: "messages",
+    element: <Messages />,
+    state: "messages",
+    sidebarProps: {
+      displayText: "Messages",
+      icon: <MessageIcon />
     }
   },
   {

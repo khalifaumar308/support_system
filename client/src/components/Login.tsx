@@ -4,49 +4,47 @@ import { setCredentials } from "../store/slices/api/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 
-const Login:React.FC = () => {
-    const [userId, setUserId] = useState('')
-    const [password, setPassword] = useState('')
-    const [saveUser, setSaveUser] = useState(false)
+const Login = () => {
+  const [userId, setUserId] = useState('')
+  const [password, setPassword] = useState('')
+  const [saveUser, setSaveUser] = useState<boolean>(false)
 
-    const [loginUser, { isLoading, isError, error }] = useLoginMutation();
-    const [errMsg, setErrMsg] = useState("");
+  const [loginUser, { isLoading, isError, error }] = useLoginMutation();
+  const [errMsg, setErrMsg] = useState("");
 
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate()
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
 
-    useEffect(() => {
-      setErrMsg("");
-    }, [userId, password]);
+  useEffect(() => {
+    setErrMsg("");
+  }, [userId, password]);
 
+  useEffect(() => {
+    if (isError && 'status' in error) {
+      const status = error.status
+      if (status === 400) {
+        setErrMsg("Missing Email or Password");
+      } else if (status === 401) {
+        setErrMsg("Unauthorized");
+      } else {
+        setErrMsg("Login Failed");
+      }
+    }
+  }, [isError, error])
 
   const onSubmitHandler = async () => {
-    const userData = await loginUser({ email: userId, password });
-      if (!userData.error) {
-        dispatch(setCredentials({ ...userData.data }));
-        if (saveUser) {
-        localStorage.setItem("userData", JSON.stringify(userData.data));
-        }
-        console.log("login successfully", isError, error);
-        if (userData.data.role === "Affiliate") {
-          navigate("/affiliate")
-        } else {
-          navigate('/user')
-        }
-      } else {
-        const status = userData.error.originalStatus
-            if (!status) {
-              setErrMsg("No Server Response");
-            } else if (status === 400) {
-              setErrMsg("Missing Email or Password");
-            } else if (status === 401) {
-              setErrMsg("Unauthorized");
-            } else {
-              setErrMsg("Login Failed");
-            }
+    const userData = await loginUser({ email: userId, password }).unwrap();
+    console.log(userData, isLoading)
+      dispatch(setCredentials({ ...userData }));
+      if (saveUser) {
+        localStorage.setItem("userData", JSON.stringify(userData));
       }
-        
-    }
+      if (userData.role === "Affiliate") {
+        navigate("/affiliate/dashboard")
+      } else {
+        navigate('/user/dashboard')
+      }
+  }
 
   return (
     <div className="flex flex-col mt-20">
@@ -86,7 +84,7 @@ const Login:React.FC = () => {
             <div className="flex">
               <input
                 type="checkbox"
-                value={saveUser}
+                checked={saveUser}
                 onChange={() => setSaveUser(!saveUser)}
                 className="w-[20px]  border-green-600 backdrop-blur-sm"
               />
@@ -106,6 +104,9 @@ const Login:React.FC = () => {
           >
             LOGIN
           </button>
+          {isLoading &&
+            <div>Loging in....</div>
+          }
         </div>
       </div>
       {/* <div className="flex items-end">

@@ -8,7 +8,6 @@ import {
 import ClientLogin from "./pages/ClientLogin";
 import PartnerLogin from "./pages/PartnerLogin";
 import MainLayout from "./components/layout/MainLayout";
-import View from "./components/adminComponents/View";
 import ResponsiveDrawer from "./pages/ResponsiveDrawer";
 import { routes, afroutes } from "./routes";
 import { SocketContext, socket } from './context/socket';

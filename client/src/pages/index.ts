@@ -8,3 +8,4 @@ export { default as AddSchool } from './adminPages/AddSchool';
 export { default as AffiliateDashboard } from './affiliatePages/AffiliateDashboard';
 export { default as Visits } from './affiliatePages/Visits';
 export { default as MySchools } from './affiliatePages/MySchools';
+export { default as Messages } from './adminPages/Messages';

@@ -56,13 +56,8 @@ const AddSchool = () => {
       });
       setError('School Created success')
       const dataSent = Object.values(schoolData).find(val => val === false);
-      const content = JSON.stringify([
-        <div>
-          <h2>School Name: {e.target.name.value}</h2>
-          <p>Required data sent: {(dataSent === false) ? 'NO' : 'Yes'}</p>
-          <p>Affiliate Comments: {comment}</p>
-        </div>
-      ])
+      const content = `New School Referred by ${data.name}\n
+      All required Data sent: ${dataSent===false? 'No':'Yes'}\nCooments: ${comment}`
       sendMessage(content)
       setTimeout(() => (navigate('/affiliate/schools/all')), 3000)
     }

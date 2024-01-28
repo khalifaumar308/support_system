@@ -22,6 +22,8 @@ const messageSchema = new Schema<message>({
     type: Boolean,
     default: false,
   },
+  senderName: String,
+  
 }, { timestamps: true });
 
 const MessageModel = model('Message', messageSchema);

@@ -21,7 +21,7 @@ export const userLogin: RequestHandler = async (req, res) => {
       .json({ message: "Email and password are required." });
 
   const foundUser = await UsersModel.findOne({ email }).exec();
-  if (!foundUser) return res.sendStatus(401); //Unauthorized
+  if (!foundUser) return res.status(401).json({message:'Unauthorized'}); //Unauthorized
   // evaluate password
   const match = await bcrypt.compare(password, foundUser.password);
   if (match) {
@@ -78,14 +78,14 @@ export const userLogin: RequestHandler = async (req, res) => {
 
     // Send authorization roles and access token to user
     const { email, name } = foundUser;
-    res
+    console.log({ token: 'fgg', email, role: foundUser.role, name, id: foundUser._id })
+    return res
       .status(201)
-      .json({ token:accessToken, email, role: foundUser.role, name, id:foundUser._id });
+      .json({ token: accessToken, email, role: foundUser.role, name, id: foundUser._id });
   } else {
-    res.sendStatus(401);
+    return res.status(401).json({message:"Login Failed"});
   }
 };
-
 
 export const registerUser:RequestHandler = async (req, res) => {
   const { email, password, name, role } = req.body;

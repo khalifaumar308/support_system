@@ -66,3 +66,14 @@ export type notification = {
   status: string;
   senderName: string;
 }
+
+export type message = {
+  recieverId: string;
+  senderId: string;
+  senderName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  title: string;
+  read: boolean
+}

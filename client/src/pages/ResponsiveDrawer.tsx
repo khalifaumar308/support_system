@@ -23,6 +23,7 @@ import { useLocation } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import { useContext, useEffect } from 'react';
 import { useGetNotificationsQuery, useDeleteNotificationMutation } from '../store/slices/api/apiEndpoints';
+import addNotification from 'react-push-notification';
 import { useSelector } from 'react-redux';
 import Popover from '@mui/material/Popover';
 import School from '@mui/icons-material/School';
@@ -58,8 +59,14 @@ export default function ResponsiveDrawer() {
   const id = open ? 'simple-popover' : undefined;
 
   useEffect(() => {
-    socket.on('recieveNotification', (data) => {
-      alert(data.type)
+    socket.on('recieveMessage', (data) => {
+      addNotification({
+          title: data.title,
+          subtitle: data.senderName,
+          message: `New School Registered`,
+          theme: 'darkblue',
+          native: true // when using native, your OS will handle theming.
+        })
       refetch()
       return
     })

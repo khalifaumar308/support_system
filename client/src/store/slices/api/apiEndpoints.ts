@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-import { user, luser, afiliate, lafiliate, school, lschool, schoolUpdate, visits, affilaiteSchool, notification } from "../types";
+import { user, luser, afiliate, lafiliate, school, lschool, schoolUpdate, visits, affilaiteSchool, notification, message } from "../types";
 
 export const appApiEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,6 +9,11 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      // transformResponse: (response: {  data:user }) => response.data,
+      // Pick out errors and prevent nested properties in a hook or selector
+      // transformErrorResponse: (
+      //   response: { status: string | number },
+      // ) => response.status,
     }),
     getUsers: builder.query<afiliate, lafiliate>({
       query: (credentials) => ({
@@ -108,6 +113,26 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Notifications"]
     }),
+    getMessages: builder.query<{ messages: message[] }, string>({
+      query: (credentials) => ({
+        url: `user/message/${credentials}`,
+        providesTags: ["Notifications"],
+      })
+    }),
+    deleteMessage:builder.mutation<lschool, string>({
+      query: (credentials) => ({
+        url:`user/message/${credentials}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["Notifications"]
+    }),
+    updateMessage:builder.mutation<lschool, string>({
+      query: (credentials) => ({
+        url:`user/message/${credentials}`,
+        method: "PUT"
+      }),
+      invalidatesTags: ["Notifications"]
+    }),
   }),
 });
 // 
@@ -127,4 +152,7 @@ export const {
   useDeleteNotificationMutation,
   useGetNotificationsQuery,
   useSaveNotificationMutation,
+  useGetMessagesQuery,
+  useDeleteMessageMutation,
+  useUpdateMessageMutation,
 } = appApiEndpoints;

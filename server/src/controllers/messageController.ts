@@ -18,7 +18,8 @@ export const getMessages = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "User Id is required" });
   }
   try {
-    const messages = await MessageModel.find({ recieverId: userId }).sort({ createdAt: 1 }).lean().exec();
+    const messages = await MessageModel.find({ recieverId: userId }).sort({ createdAt: -1 }).lean().exec();
+    console.log(userId, messages)
     return res.status(200).json({messages})
   } catch (error) {
     return res.status(400).json({error})
