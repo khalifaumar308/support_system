@@ -7,8 +7,6 @@ import SidebarItem from "./SidebarItem";
 import SidebarItemCollapse from "./SidebarItemCollapse";
 import { zenkleus } from "../assets";
 import { useLocation } from "react-router-dom";
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Logout from "./Logout";
 
 

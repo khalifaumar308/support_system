@@ -5,7 +5,7 @@ import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEnd
 
 const Topbar = () => {
   const { data: users, isLoading , isError} = useGetUsersQuery({id:false})
-  const { data: schools, isLoading: sLoading, isError:sError } = useGetSchoolsQuery({id:false})
+  const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({id:false})
   const loading = isLoading || sLoading
   const navigate = useNavigate()
 
@@ -17,17 +17,18 @@ const Topbar = () => {
       </>
     )
   }
-  const items = loading?[]:isError?[]:[...users.affiliates, ...schools.schools]
+
+  const items = loading?[]:isError?[]:users && schools?[...users.affiliates, ...schools.schools]: []
 
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
-    // console.log(string, results)
+    console.log(string, results)
   }
 
   const handleOnHover = (result) => {
     // the item hovered
-    // console.log(result)
+    console.log(result)
   }
 
   const handleOnSelect = (item) => {

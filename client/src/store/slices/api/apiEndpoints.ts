@@ -15,7 +15,7 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
       //   response: { status: string | number },
       // ) => response.status,
     }),
-    getUsers: builder.query<afiliate, lafiliate>({
+    getUsers: builder.query<{ affiliates: afiliate[] }, lafiliate>({
       query: (credentials) => ({
         url: credentials.id ? `user/affiliates/${credentials.id}` : "user/affiliates/",
         providesTags: ["Users"],
@@ -37,7 +37,7 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Schools"]
     }),
-    getSchools: builder.query<school[], lafiliate>({
+    getSchools: builder.query<{ schools: school[] }, lafiliate>({
       query: (credentials) => ({
         url: credentials.id ? `user/schools/${credentials.id}` : "user/schools/",
         providesTags: ["Schools"],
