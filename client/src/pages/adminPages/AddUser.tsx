@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react"
+import { useState, FormEvent, useEffect } from "react"
 import Modal from "../../components/Modal"
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import { useGetSchoolsQuery } from "../../store/slices/api/apiEndpoints"
@@ -6,7 +6,8 @@ import SchoolIcon from '@mui/icons-material/School';
 import { school } from "../../store/slices/types";
 import { useCreateUserMutation } from "../../store/slices/api/apiEndpoints";
 import { useNavigate } from "react-router-dom";
-import { Password } from "@mui/icons-material";
+
+// import { Password } from "@mui/icons-material";
 
 
 const AddUser = () => {
@@ -15,28 +16,38 @@ const AddUser = () => {
     percentage: number
   };
   const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: false })
-  const [createUser, { isLoading, isError }] = useCreateUserMutation();
+  const [createUser, { isLoading, isError, error }] = useCreateUserMutation();
   const [open, setOpen] = useState(true)
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState('--Choose--');
   const [referred, setReferred] = useState<schoolReferred[]>([]);
   const [toShow, setToShow] = useState<school[]>([]);
-  const [error, setError] = useState('');
-  const [percentages, setPercentages] = useState({})
+  const [errorMsg, setError] = useState('');
+  const [percentages, setPercentages] = useState<{ [key: number]: number; }>({})
   const navigate = useNavigate()
-  // type afiliate = {
-  //   userId: Types.ObjectId,
-  //   email: string;
-  //   name: string;
-  //   phone: string;
-  //   schoolsReferred: [schoolReferred];
-  // };
+  
+  useEffect(() => {
+    if (isError) {
+      if (error && 'status' in error) {
+        const status = error.status
+        if (status === 400) {
+          setError("All fields are required");
+        } else if (status === 409) {
+          setError("User Exists");
+        } else {
+          setError("Registeration Failed");
+        }
+      }
+    }
+  }, [error, isError])
 
-  const items =sLoading?[]: [...schools.schools]
+  const items = sLoading ? [] : schools ? [...schools.schools] : [];
 
-  const formatResult = (item) => {
+  const formatResult = (item:school) => {
     return (
       <div className="bg-red-100 flex mr-1 rounded-md shadow-sm shadow-slate-200">
         <SchoolIcon />
@@ -45,19 +56,20 @@ const AddUser = () => {
     )
   }
 
-  const handleOnSearch = (string, results) => {
+  const handleOnSearch = (string: string, results: school[]) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
+    console.log(string, results)
   }
 
-  const handleOnHover = (result) => {
+  const handleOnHover = (result:school) => {
     // the item hovered
     console.log(result)
   }
 
-  const handleOnSelect = (item) => {
+  const handleOnSelect = (item:school) => {
     // the item selected
-    setReferred([...referred, { schoolId:item._id, percentage:10 }])
+    setReferred([...referred, { schoolId:item._id||'123', percentage:10 }])
     setToShow([...toShow, item])
   }
 
@@ -70,7 +82,7 @@ const AddUser = () => {
         <SchoolIcon />
         <h2 className="ml-1 ">{item.name}</h2>
       </div>
-      <input className="ml-2 border-black border-2 p-1 " placeholder="percentage" onChange={(e)=>setPercentages({...percentages, [id]:e.target.value})}/>
+      <input className="ml-2 border-black border-2 p-1 " placeholder="percentage" onChange={(e)=>setPercentages({...percentages, [id]:Number(e.target.value)})}/>
     </div>
   ))
 
@@ -79,40 +91,47 @@ const AddUser = () => {
     // console.log(toShow, referred)
     const rfr: schoolReferred[] = [];
     referred.forEach(({ schoolId }, id) => {
+      // const id_str = id.toString()
       rfr.push({schoolId, percentage:percentages[id]})
     })
     const data = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      role: e.target.role.value,
-      phone: e.target.phone.value,
-      password: e.target.password.value,
+      name,
+      email,
+      role,
+      phone,
+      password,
+      address,
       schoolsReferred: rfr
     }
     // console.log(rfr)
-    const returned = await createUser(data)
-    if (returned.error) {
-      console.log(returned.error)
-      setError('School Creation Failed')
-    } else {
+    try {
+      await createUser(data)
+    } catch (error) {
       setError('School Created success')
       setTimeout(() => (navigate('/user/users/all')), 3000)
     }
   }
   return (
-    open&&(<Modal onClose={()=>setOpen(false)}>
+    open &&
+    (<Modal onClose={() => setOpen(false)}>
+      
       <div>
+        {isLoading ? <div>Saving....</div> :
         <form className="flex flex-col" onSubmit={register}>
           <label className="flex flex-col">Name
-            <input name="name" placeholder="name"
+            <input value={name} onChange={(e)=>setName(e.target.value)} name="name" placeholder="name"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">Email
-            <input name="email" type="email" placeholder="mail@mail.com"
+            <input value={email} onChange={(e) => setEmail(e.target.value)} name="email" type="email" placeholder="mail@mail.com"
+              className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
+          </label>
+          <label className="flex flex-col">Address
+            <input value={address} onChange={(e) => setAddress(e.target.value)} name="email" type="email" placeholder="mail@mail.com"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">Password
-            <input name="password" placeholder="********"
+            <input value={password} onChange={(e) => setPassword(e.target.value)} name="password" placeholder="********"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">
@@ -127,7 +146,7 @@ const AddUser = () => {
           {role === 'Affiliate' &&
             (<div>
             <label className="flex flex-col">Phone Number
-              <input name="phone" type="phone" placeholder="+234 000 0000"
+              <input value={phone} onChange={(e)=>setPhone(e.target.value)} name="phone" type="phone" placeholder="+234 000 0000"
                 className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
             </label>
             <div>
@@ -145,9 +164,10 @@ const AddUser = () => {
               fuseOptions={{ keys: ['name', 'address'] }}
             />
             </div>)}
-          <div>{error}</div>
+          <div>{errorMsg}</div>
           <button className="bg-[#1e253a] text-white shadow-md shadow-gray-100 hover:bg-slate-600 p-2 rounded-md mt-2"  type="submit">Save</button>
         </form>
+        }
       </div>
     </Modal>)
   )

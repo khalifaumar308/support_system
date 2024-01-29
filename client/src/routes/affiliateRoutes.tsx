@@ -3,7 +3,7 @@ import { AffiliateDashboard, Visits, MySchools } from "../pages";
 import { UsersLayout } from "../pages";
 import AddSchool from "../pages/affiliatePages/AddSchool";
 import AddVisit from "../pages/affiliatePages/AddVisit";
-import VisitView from "../components/affiliate/VisitView";
+// import VisitView from "../components/affiliate/VisitView";
 import SchoolView from "../components/affiliate/SchoolView";
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';

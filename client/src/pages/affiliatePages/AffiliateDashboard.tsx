@@ -1,7 +1,6 @@
 import {
   BarChart,
   Bar,
-  CartesianGrid,
   XAxis,
   YAxis,
   PieChart,
@@ -31,7 +30,7 @@ const AffiliateDashboard = () => {
       <div className="mt-[100px] w-full">
         <PieChart width={500} height={500}>
           <Pie data={data} dataKey="students" nameKey="name" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" >
-            {data.map((entry, index) => (
+            {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
