@@ -56,15 +56,15 @@ const AddSchool = () => {
       {isLoading ? (<div>Saving...</div>) :
       <form className="flex flex-col" onSubmit={register}>
         <label className="flex flex-row items-center ">School Name
-          <input value={name} onChange={(e)=>setName(e.target.name)} name="name" placeholder="name"
+          <input value={name} onChange={(e)=>setName(e.target.value)} name="name" placeholder="name"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">School Address
-            <input value={address} onChange={(e) => setAddress(e.target.name)} name="address" placeholder="Address" type="address"
+            <input value={address} onChange={(e) => setAddress(e.target.value)} name="address" placeholder="Address" type="address"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">Comment
-          <textarea value={comment} onChange={(e) => setComment(e.target.name)} name="comment" placeholder="Comment"
+          <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="comment" placeholder="Comment"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <div className="bg-green-900 text-white">{errorMsg}</div>
