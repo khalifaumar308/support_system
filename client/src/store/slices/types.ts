@@ -5,7 +5,7 @@ export type afiliate = {
   name: string;
   phone: string;
   role?: string;
-  schoolsReferred: string[];
+  schoolsReferred: {schoolId:string, percentage:string}[];
   _id?: string;
 }
 export type lafiliate = {
@@ -52,9 +52,9 @@ export type visits = {
   schoolName: string;
   address: string;
   comment: string;
+  _id?: string;
+  createdAt?: Date
 }
-
-
 
 export type affilaiteSchool = {
   id: string,

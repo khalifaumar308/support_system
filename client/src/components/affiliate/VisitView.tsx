@@ -3,8 +3,8 @@ import { useGetSingleVisitQuery } from "../../store/slices/api/apiEndpoints";
 
 const VisitView = () => {
   const visitId = useParams().id
-  const { data: visit, isLoading, isError, Error } = useGetSingleVisitQuery({ id: visitId });
-  const date = isLoading? new Date(): new Date(visit?.visit.createdAt)
+  const { data: visit, isLoading } = useGetSingleVisitQuery({ id: visitId });
+  const date = isLoading? new Date(): new Date(visit?.visit.createdAt|| '')
   const viewContent = isLoading ? (<div>Loading...</div>) : (
     <div className="flex w-full flex-col bg-slate-200 p-2 mt-2">
       <div className="flex flex-row">

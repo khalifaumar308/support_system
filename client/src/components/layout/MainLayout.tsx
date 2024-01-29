@@ -9,7 +9,7 @@ import ResponsiveDrawer from "../../pages/ResponsiveDrawer";
 // import { useEffect } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { selectCurrentUser } from "../../store/slices/api/authSlice";
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { SocketContext } from "../../context/socket";
 
 // const socket = io.connect("")

@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useState, useEffect } from "react"
 import Modal from "../../components/Modal"
 import { useCreateSchoolMutation } from "../../store/slices/api/apiEndpoints";
 import { school } from "../../store/slices/types";
@@ -8,14 +8,36 @@ const AddSchool = () => {
   const [open, setOpen] = useState<boolean>(true);
   const [onboarded, SetOnBoarded] = useState<boolean>(false);
   const [trained, SetTrained] = useState<boolean>(false);
-  const [createSchool, { isLoading, isError, Error }] = useCreateSchoolMutation()
-  const [error, setError] = useState<string>('');
+  const [createSchool, { isLoading, isError, error }] = useCreateSchoolMutation();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [students, setStudents] = useState(0);
+  const [onboardDate, setOnboardDate] = useState('');
+  const [trainDate, setTrainDate] = useState('');
+  const [spackage, setPackage] = useState(0);
+  const [errorMsg, setError] = useState<string>('');
   const [term, setTerm] = useState<string>('---Choose---');
   const [fterm, setFterm] = useState<boolean>(false);
   const [sterm, setSterm] = useState<boolean>(false);
   const [lterm, setLterm] = useState<boolean>(false);
   const [affiliatePercentage, setAffiliatePercentage] = useState<number>(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError) {
+      if (error && 'status' in error) {
+        const status = error.status
+        if (status === 400) {
+          setError("All fields are required");
+        } else if (status === 409) {
+          setError("School Exists");
+        } else {
+          setError("Login Failed");
+        }
+      }
+    }
+  }, [isError, error])
 
   const paymentDivs = (
     <div className="flex text-xs">
@@ -53,51 +75,46 @@ const AddSchool = () => {
       }
     }
     const data: school = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      address: e.target.address.value,
-      students: e.target.students.value,
+      name, email, address, students,
       onboarded,
       trained,
-      onboardDate: onboarded ? e.target.onboardingDate.value : '',
-      trainDate: trained ? e.target.trainingDate.value : '',
+      onboardDate:new Date(onboardDate),
+      trainDate: new Date(trainDate),
       payment,
-      package: e.target.package.value,
+      package:spackage,
       currentTerm: term,
       affiliatePercentage
     }
-    const returned = await createSchool(data)
-    
-    if (returned.error) {
-      console.log( returned.error)
-      setError('School Creation Failed')
-    } else {
-      setError('School Created success')
+    try {
+      await createSchool(data); 
       setTimeout(()=>(navigate('/user/schools/all')),3000)
+    } catch (err) {
+      console.log(err)
     }
   }
 
   return open?(
     <Modal onClose={() => setOpen(false)}>
+      {isLoading ? (<div>Creating...</div>) :(
       <form className="flex flex-col" onSubmit={register}>
         <label className="flex flex-row items-center ">School Name
-          <input name="name" placeholder="name"
+          <input value={name} onChange={(e)=>setName(e.target.value)} name="name" placeholder="name"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">School Email
-          <input name="email" type="email" placeholder="mail@mail.com"
+          <input value={email} onChange={(e) => setEmail(e.target.value)} name="email" type="email" placeholder="mail@mail.com"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">School Address
-          <input name="address" placeholder="Address" type="address"
+          <input value={address} onChange={(e) => setAddress(e.target.value)} name="address" placeholder="Address" type="address"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">Number of Students
-          <input name="students" type="number" placeholder="0"
+          <input value={students} onChange={(e) => setStudents(Number(e.target.value))} name="students" type="number" placeholder="0"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">Package(Amount per student)
-          <input name="package" type="number" min={100} placeholder="0"
+          <input value={spackage} onChange={(e) => setPackage(Number(e.target.value))} name="package" type="number" min={100} placeholder="0"
             className="active:border-gray-300 mb-2 ml-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
         </label>
         <label className="flex flex-row items-center align-middle">Affiliate Percentage
@@ -124,7 +141,7 @@ const AddSchool = () => {
         </div>
         {onboarded && (
           <label className="flex flex-col mt-2">Onboarding Date
-            <input name="onboardingDate" type="date" placeholder="0"
+            <input value={onboardDate} onChange={(e)=>setOnboardDate(e.target.value)} name="onboardingDate" type="date" placeholder="0"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
         )}
@@ -132,7 +149,7 @@ const AddSchool = () => {
           <div>
             <div className="flex flex-col">
               <label className="flex flex-col mt-2">Training Date
-                <input name="trainingDate" type="date" placeholder="0"
+                <input value={trainDate} onChange={(e) => setTrainDate(e.target.value)} name="trainingDate" type="date" placeholder="0"
                   className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
               </label>
               <label className="flex flex-col">Trained By:
@@ -143,9 +160,10 @@ const AddSchool = () => {
             </div>
           </div>
         )}
-        <div className="bg-green-900 text-white">{ error }</div>
+        <div className="bg-green-900 text-white">{ errorMsg }</div>
         <button className="bg-[#1e253a] text-white shadow-md shadow-gray-100 hover:bg-slate-600 p-2 rounded-md mt-2" type="submit">Save</button>
-      </form>
+      </form>)
+      }
     </Modal>
   ): <></>
 }
