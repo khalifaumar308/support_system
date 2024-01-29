@@ -4,7 +4,8 @@ import type { RootState } from "../../store";
 
 const baseQuery = fetchBaseQuery({
   // baseUrl: "https://student-app-o1kg.onrender.com/api/v1/",
-  baseUrl: "http://localhost:3000",
+  // baseUrl: "http://localhost:3000",
+  baseUrl: "https://zenkleus-support-system.onrender.com",
   credentials: "same-origin",
   // mode: "no-cors",
   prepareHeaders: (headers, { getState }) => {

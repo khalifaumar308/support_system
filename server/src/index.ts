@@ -13,7 +13,7 @@ import { saveMessage } from './controllers/messageController';
 // import { sendMail } from './services/email';
 
 dotenv.config();
-const allowedOrigins:string[] = ["http://127.0.0.1:5173", "http://localhost:5173"];
+const allowedOrigins:string[] = ["https://support-system-nine.vercel.app", "http://localhost:5173"];
 const credentials:RequestHandler = (req, res, next) => {
   const origin = req.headers.origin || '';
   if (allowedOrigins.includes(origin)) {
@@ -62,7 +62,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://support-system-nine.vercel.app",
   },
 });
 
