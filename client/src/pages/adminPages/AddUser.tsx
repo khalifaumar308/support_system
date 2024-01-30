@@ -127,7 +127,7 @@ const AddUser = () => {
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">Address
-            <input value={address} onChange={(e) => setAddress(e.target.value)} name="email" type="email" placeholder="mail@mail.com"
+            <input value={address} onChange={(e) => setAddress(e.target.value)} name="address" type="address" placeholder="mail@mail.com"
               className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
           </label>
           <label className="flex flex-col">Password
