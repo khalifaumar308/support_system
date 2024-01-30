@@ -23,6 +23,7 @@ const AddUser = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
+  const [location, setLocation] = useState('');
   const [role, setRole] = useState('--Choose--');
   const [referred, setReferred] = useState<schoolReferred[]>([]);
   const [toShow, setToShow] = useState<school[]>([]);
@@ -101,6 +102,7 @@ const AddUser = () => {
       phone,
       password,
       address,
+      location,
       schoolsReferred: rfr
     }
     // console.log(rfr)
@@ -145,10 +147,14 @@ const AddUser = () => {
           </label>
           {role === 'Affiliate' &&
             (<div>
-            <label className="flex flex-col">Phone Number
-              <input value={phone} onChange={(e)=>setPhone(e.target.value)} name="phone" type="phone" placeholder="+234 000 0000"
-                className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
-            </label>
+              <label className="flex flex-col">Phone Number
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} name="phone" type="phone" placeholder="+234 000 0000"
+                  className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
+              </label>
+              <label className="flex flex-col">Location
+                <input value={location} onChange={(e) => setLocation(e.target.value)} name="location" placeholder="Location"
+                  className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
+              </label>
             <div>
               <h3>Schools Referred</h3>
               {referredDivs}

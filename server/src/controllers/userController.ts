@@ -113,9 +113,9 @@ export const registerUser:RequestHandler = async (req, res) => {
     });
 
     if (role === "Affiliate") {
-      const { phone, schoolsReferred } = req.body
+      const { phone, schoolsReferred, location } = req.body
       await AffiliateModel.create({
-        email, name, phone, schoolsReferred, userId:user._id
+        email, name, phone, schoolsReferred, userId:user._id, location
       });
       await sendMail({email, name, password})
     }

@@ -63,7 +63,7 @@ const Topbar = () => {
               onFocus={handleOnFocus}
               autoFocus
               formatResult={formatResult}
-              fuseOptions={{ keys: ['name', 'address'] }}
+              fuseOptions={{ keys: ['name', 'address', 'location'] }}
             />
         </div>
     ))
