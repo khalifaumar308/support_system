@@ -3,7 +3,7 @@ import SchoolComp from "../components/adminComponents/SchoolComp";
 
 
 const Schools = () => {
-  const {data:schools, isLoading, isError} = useGetSchoolsQuery({id:false})
+  const {data:schools, isLoading, isError} = useGetSchoolsQuery({id:false}, {refetchOnMountOrArgChange:true})
   console.log(isLoading, isError)
   const allSchools = isLoading ? [] : schools?schools.schools:[];
   const schoolDivs = allSchools.map((school, id)=><SchoolComp school={school} key={id} />)

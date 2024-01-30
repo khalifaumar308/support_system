@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const SchoolComp = ({ school }: { school: school }) => {
   const navigate = useNavigate()
-  console.log(school.name)
   return (
     <div onClick={() => navigate(`/user/schoolview/${school._id}`)} className="bg-[#2d3e57] text-white mb-1 cursor-pointer p-2 flex mr-1 rounded-md shadow-sm shadow-black">
       <SchoolIcon />
