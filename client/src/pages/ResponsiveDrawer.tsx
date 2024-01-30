@@ -43,7 +43,9 @@ export default function ResponsiveDrawer() {
   const routes = pathname.includes('affiliate') ? affiliateRoutes : adminRoutes
   const notificationNumber = notificationLoading ? '...' : notifications?.notifications.length
   const userNotifications = notificationLoading ? [] : notifications?.notifications;
-  console.log(userNotifications)
+  const path = location.pathname;
+  const splited = path.split('/');
+  const currentFeature = splited[2];
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -140,8 +142,13 @@ export default function ResponsiveDrawer() {
             </IconButton>
         </Toolbar>)
         }
-        <Toolbar sx={{backgroundColor:'white',width:"100%"}} >
-          <Topbar />
+        <Toolbar sx={{ backgroundColor: 'white', width: "100%" }} >
+          {path.includes('user') &&
+            <Topbar />
+          }
+          <h2 className='text-black sm:ml-2 sm:text-2xl hidden sm:flex'>
+            {currentFeature.toUpperCase()}
+          </h2>
         </Toolbar>
         <Toolbar sx={{ position: "relative", width: "100%" }}>
           <div className='absolute text-xs text-white bg-red-600 p-1 z-10 right-[9.5rem] top-2 rounded-full'>

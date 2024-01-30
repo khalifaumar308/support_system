@@ -50,7 +50,6 @@ const AddSchool = () => {
     }
 
   }
-
   return open ? (
     <Modal onClose={() => setOpen(false)}>
       {isLoading ? (<div>Saving...</div>) :

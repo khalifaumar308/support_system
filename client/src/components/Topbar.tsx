@@ -2,7 +2,8 @@ import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import { useNavigate } from "react-router-dom";
 import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEndpoints";
 import { afiliate, school } from '../store/slices/types';
-
+import SchoolIcon from '@mui/icons-material/School';
+import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 
 const Topbar = () => {
   const { data: users, isLoading , isError} = useGetUsersQuery({id:false})
@@ -11,11 +12,16 @@ const Topbar = () => {
   const navigate = useNavigate()
 
   const formatResult = (item:afiliate|school) => {
-    return (
-      <>
-        <span style={{ display: 'block', textAlign: 'left' }}>id: {item._id}</span>
-        <span style={{ display: 'block', textAlign: 'left' }}>name: {item.name}</span>
-      </>
+    return ('schoolsReferred' in item) ? (
+      <div onClick={() => navigate(`/user/userview/${item._id}`)} className="bg-[#2d3e57] text-white mb-1 cursor-pointer p-2 flex mr-1 rounded-md shadow-sm shadow-black">
+        <AccountCircleSharpIcon />
+        <h2 className="ml-1 ">{item.name}</h2>
+      </div>
+    ) : (
+        <div onClick={() => navigate(`/user/schoolview/${item._id}`)} className="bg-[#2d3e57] text-white mb-1 cursor-pointer p-2 flex mr-1 rounded-md shadow-sm shadow-black">
+          <SchoolIcon />
+          <h2 className="ml-1 ">{item.name}</h2>
+        </div>
     )
   }
 
@@ -48,28 +54,6 @@ const Topbar = () => {
   return (
     isLoading ? (<div className="ml-[270px]">Loading...</div>) : (
       isError ? (<div className="ml-[270px]">Error</div>):
-    // <AppBar
-    //   sx={{
-    //       width: {xs:`calc(100% - ${sizeConfigs.sidebar.width})`},
-    //       ml: sizeConfigs.sidebar.width,
-    //       mt: 1,
-    //       mr: 1,
-    //       boxShadow: "unset",
-    //       backgroundColor: colorConfigs.topbar.bg,
-    //       color: colorConfigs.topbar.color
-    //   }}
-    // >
-    //     <ReactSearchAutocomplete
-    //       items={items}
-    //       onSearch={handleOnSearch}
-    //       onHover={handleOnHover}
-    //       onSelect={handleOnSelect}
-    //       onFocus={handleOnFocus}
-    //       autoFocus
-    //       formatResult={formatResult}
-    //       fuseOptions={{ keys: ['name', 'address'] }}
-    //     />
-        // </AppBar>)
         <div className="w-[100%] sm:w-[320px]">
             <ReactSearchAutocomplete
               items={items}
