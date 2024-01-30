@@ -6,8 +6,8 @@ import SchoolIcon from '@mui/icons-material/School';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 
 const Topbar = () => {
-  const { data: users, isLoading , isError} = useGetUsersQuery({id:false})
-  const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({id:false})
+  const { data: users, isLoading, isError } = useGetUsersQuery({ id: false });
+  const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: false });
   const loading = isLoading || sLoading
   const navigate = useNavigate()
 

@@ -1,75 +1,66 @@
-import { PieChart } from '@mui/x-charts/PieChart';
-import { BarChart } from '@mui/x-charts/BarChart';
+import { useGetUsersQuery, useGetSchoolsQuery } from '../../store/slices/api/apiEndpoints';
+import { useCallback } from 'react';
 
 
 const Dashboard = () => {
-  const uData = [4, 5, 3, 2];
-  const xLabels = ['0 - 150', '150 - 350', '350 - 500', '500 - Above'];
-  return (
+  const { data: users, isLoading } = useGetUsersQuery({ id: false });
+  const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: false });
+  const loading = isLoading || sLoading;
+
+  // const uData = [4, 5, 3, 2];
+  // const xLabels = ['0 - 150', '150 - 350', '350 - 500', '500 - Above'];
+  const totalStudents = useCallback(() => {
+    if (!loading && schools) {
+      let total = 0;
+      let projMoney = 0;
+      let payedMoney = 0;
+      let unboardedS = 0;
+      let trainedS = 0;
+      schools.schools.forEach(({ students, trained, package:sPackage, payment, onboarded }) => {
+        total += students
+        if (onboarded) {
+          unboardedS += 1
+        }
+        if (trained && sPackage) {
+          trainedS += 1
+          projMoney += sPackage * students
+          console.log(payment)
+          if (payment && payment[payment?.length -1 ]) {
+            payedMoney += sPackage*students
+          }
+        }
+      })
+      return [total, projMoney, payedMoney, unboardedS, trainedS]
+    }
+    return [0,0,0,0,0]
+  }, [loading, schools])
+  const [students, pMoney, payed, numOnboard, numTrained] = totalStudents()
+
+  return loading? <div>Loading...</div> :(
     <div>
       <div>
-        <h2 className='text-2xl text-red-950'>Schools And Payement:</h2>
-        <div className='flex flex-row items-end gap-20 ml-[] w-[90%]'>
+        <h2 className='text-2xl text-red-950 mb-4'>Schools And Payement:</h2>
+        <div className='flex flex-col sm:flex-row items-end gap-4 ml-[] w-[90%]'>
           <div>
-            <PieChart
-              series={[
-                {
-                  data: [
-                    { id: 0, value: 10, label: 'Payed' },
-                    { id: 1, value: 15, label: 'Not Payed' },
-                  ],
-                },
-              ]}
-              width={300}
-              height={150}
-            />
-            <div>
-              <h2>Total Number of Schools: <span>12</span></h2>
-              <h2>Total Number of Students: <span>12</span></h2>
+            <div className='bg-slate-200 mr-1'>
+              <h2>Total Number of Schools: <span>{ schools?.schools.length }</span></h2>
+              <h2>Total Number of Students: <span>{ students }</span></h2>
             </div>
           </div>
           <div>
-            <PieChart
-              series={[
-                {
-                  data: [
-                    { id: 0, value: 15000, label: 'Payed' },
-                    { id: 1, value: 135000, label: 'Not Payed' },
-                  ],
-                },
-              ]}
-              width={300}
-              height={150}
-            />
-            <div>
-              <h2>Total Projected Money: <span>1500000</span></h2>
-              <h2>Total Money Payed: <span>150000</span></h2>
+            <div className='bg-slate-200 mr-1'>
+              <h2>Total Projected Money: <span>{pMoney}</span></h2>
+              <h2>Total Money Payed: <span>{payed}</span></h2>
             </div>
           </div>
           <div>
-            <BarChart
-              xAxis={[{ scaleType: 'band', data: xLabels }]}
-              series={[{data:uData, label:'uv', type:'bar'}]}
-              width={250}
-              height={200}
-              bottomAxis={{
-                // labelStyle: {
-                //   fontSize: 14,
-                //   transform: `translateY(${
-                //     // Hack that should be added in the lib latter.
-                //     5 * Math.abs(Math.sin((Math.PI * 45) / 180))
-                //     }px)`
-                // },
-                tickLabelStyle: {
-                  angle: 45,
-                  textAnchor: 'start',
-                  fontSize: 12,
-                },
-              }}
-
-            />
+            <div className='bg-slate-200 mr-1'>
+              <h2>Total Onboarded Schools: <span>{numOnboard}</span></h2>
+              <h2>Total Trained Schools: <span>{numTrained}</span></h2>
+            </div>
           </div>
         </div>
+        <div className='mt-4'>Total Affiliates: { users?.affiliates.length }</div>
       </div>
 
     </div>

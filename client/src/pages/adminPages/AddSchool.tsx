@@ -3,12 +3,13 @@ import Modal from "../../components/Modal"
 import { useCreateSchoolMutation } from "../../store/slices/api/apiEndpoints";
 import { school } from "../../store/slices/types";
 import { useNavigate } from "react-router-dom";
+import addNotification from "react-push-notification";
 
 const AddSchool = () => {
   const [open, setOpen] = useState<boolean>(true);
   const [onboarded, SetOnBoarded] = useState<boolean>(false);
   const [trained, SetTrained] = useState<boolean>(false);
-  const [createSchool, { isLoading, isError, error }] = useCreateSchoolMutation();
+  const [createSchool, { isLoading, isError, error, isSuccess }] = useCreateSchoolMutation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
@@ -37,7 +38,16 @@ const AddSchool = () => {
         }
       }
     }
-  }, [isError, error])
+    if (isSuccess) {
+      addNotification({
+        title: 'School Created',
+        subtitle: 'New School Created Successfully',
+        message: `New School Registered`,
+        theme: 'darkblue',
+        native: true,// when using native, your OS will handle theming.
+      })
+    }
+  }, [isError, error, isSuccess])
 
   const paymentDivs = (
     <div className="flex text-xs">
