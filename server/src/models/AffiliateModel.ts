@@ -11,6 +11,7 @@ type afiliate = {
   name: string;
   phone: string;
   schoolsReferred: [schoolReferred];
+  location: string;
 };
 
 const schoolReferredSchema = new Schema<schoolReferred>({
@@ -32,6 +33,11 @@ const affiliateSchema = new Schema<afiliate>({
   phone: {
     type: String,
     required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+    default:'Kano',
   },
   schoolsReferred: [ schoolReferredSchema ],//[schoolName, percentageOffer] 
 });

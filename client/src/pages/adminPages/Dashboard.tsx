@@ -24,7 +24,6 @@ const Dashboard = () => {
         if (trained && sPackage) {
           trainedS += 1
           projMoney += sPackage * students
-          console.log(payment)
           if (payment && payment[payment?.length -1 ]) {
             payedMoney += sPackage*students
           }
@@ -39,22 +38,22 @@ const Dashboard = () => {
   return loading? <div>Loading...</div> :(
     <div>
       <div>
-        <h2 className='text-2xl text-red-950 mb-4'>Schools And Payement:</h2>
+        <h2 className='text-2xl text-red-950 mb-4'>Schools And Payment:</h2>
         <div className='flex flex-col sm:flex-row items-end gap-4 ml-[] w-[90%]'>
           <div>
-            <div className='bg-slate-200 mr-1'>
+            <div className='bg-[#00c274] text-white font-mi rounded-sm shadow-md text-2xl shadow-gray-400 p-2 mr-1'>
               <h2>Total Number of Schools: <span>{ schools?.schools.length }</span></h2>
               <h2>Total Number of Students: <span>{ students }</span></h2>
             </div>
           </div>
           <div>
-            <div className='bg-slate-200 mr-1'>
+            <div className='bg-[#00c274] text-white font-mi rounded-sm shadow-md text-2xl shadow-gray-400 p-2 mr-1'>
               <h2>Total Projected Money: <span>{pMoney}</span></h2>
               <h2>Total Money Payed: <span>{payed}</span></h2>
             </div>
           </div>
           <div>
-            <div className='bg-slate-200 mr-1'>
+            <div className='bg-[#00c274] text-white font-mi rounded-sm shadow-md text-2xl shadow-gray-400 p-2 mr-1'>
               <h2>Total Onboarded Schools: <span>{numOnboard}</span></h2>
               <h2>Total Trained Schools: <span>{numTrained}</span></h2>
             </div>

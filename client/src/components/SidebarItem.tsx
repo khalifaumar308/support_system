@@ -24,7 +24,9 @@ const SidebarItem = ({ item }: Props) => {
           },
           backgroundColor: appState === item.state ? colorConfigs.sidebar.activeBg : "unset",
           paddingY: "12px",
-          paddingX: "24px"
+          paddingX: "24px",
+          fontSize: "24px"
+
         }}
       >
         <ListItemIcon sx={{
@@ -42,7 +44,8 @@ const SidebarItem = ({ item }: Props) => {
               },
               backgroundColor: appState === item.state ? colorConfigs.sidebar.activeBg : "unset",
               paddingY: "12px",
-              paddingX: "24px"
+              paddingX: "24px",
+              fontSize: "24px"
             }}
           >
             <ListItemIcon sx={{

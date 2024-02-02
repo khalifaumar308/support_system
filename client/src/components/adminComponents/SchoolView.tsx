@@ -41,23 +41,23 @@ function SchoolView() {
     if (paymentL) {
       if (paymentL > 0) {
         payList.push(
-          (<div className="flex flex-row items-center align-middle">
-            <h2>First Term:</h2>
-            <p className="ml-2 border-gray-100 rounded-md w-full">{item&&item.payment&&item.payment[0]? "Payed":"Yet To Pay"}</p>
+          (<div className="flex flex-row p-2 bg-[#b8edd9] mb-2 text-orange-400">
+            <h2 className="w-[50%]">First Term:</h2>
+            <p>{item&&item.payment&&item.payment[0]? "Payed":"Yet To Pay"}</p>
           </div>)
         )
         if (paymentL > 1) {
           payList.push((
-            <div className="flex flex-row items-center align-middle">
-              <h2>Second Term:</h2>
-              <p className="ml-2 border-gray-100 rounded-md w-full">{item && item.payment && item.payment[1] ? "Payed" : "Yet To Pay"}</p>
+            <div className="flex flex-row p-2 bg-[#b8edd9] mb-2 text-orange-400">
+              <h2 className="w-[20%]">Second Term:</h2>
+              <p>{item && item.payment && item.payment[1] ? "Payed" : "Yet To Pay"}</p>
             </div>
           ))
           if (paymentL > 2) {
             payList.push((
-            <div className="flex flex-row items-center align-middle">
-              <h2>Third Term:</h2>
-                <p className="ml-2 border-gray-100 rounded-md w-full">{item && item.payment && item.payment[2] ? "Payed" : "Yet To Pay"}</p>
+              <div className="flex flex-row p-2 bg-[#b8edd9] mb-2 text-orange-400">
+              <h2 className="w-[20%]">Third Term:</h2>
+                <p>{item && item.payment && item.payment[2] ? "Payed" : "Yet To Pay"}</p>
             </div>
           ))}
         }
@@ -65,58 +65,58 @@ function SchoolView() {
     }
   }
   const viewContent = sLoading? (<div>Loading...</div>):(
-    <div className="flex w-full flex-col bg-slate-200 p-2 mt-2">
-      <div className="flex flex-row">
-        <h2>Email:</h2>
-        <p className="ml-2 border-gray-100 rounded-md w-full">{item&&item.email}</p>
+    <div className="flex w-full flex-col items-center align-middle p-2 mt-2 sm:text-2xl">
+      <div className="flex flex-row p-2 bg-[#b8edd9] w-[70%] mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400">
+        <h2 className="w-[50%]">Email:</h2>
+        <p>{item&&item.email}</p>
       </div>
-      <div className="flex flex-row">
-        <h2>Address:</h2>
-        <p className="ml-2 border-gray-100 rounded-md w-full">{item&&item.address}</p>
+      <div className="flex flex-row p-2 bg-[#b8edd9] w-[70%] mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400">
+        <h2 className="w-[50%]">Address:</h2>
+        <p>{item&&item.address}</p>
       </div>
 
-      <div className="flex flex-row">
-        <h2>Students:</h2>
-        <p className="ml-2 border-gray-100 rounded-md w-full">{item&&item.students}</p>
+      <div className="flex flex-row p-2 bg-[#b8edd9] w-[70%] mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400">
+        <h2 className="w-[50%]">Students:</h2>
+        <p>{item&&item.students}</p>
       </div>
-      <div className="flex flex-row">
-        <h2>Onboarded:</h2>
-        <p className="ml-2 border-gray-100 rounded-md w-full">{item&&item.onboarded ? "Yes" : "No"}</p>
+      <div className="flex flex-row p-2 bg-[#b8edd9] w-[70%] mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400">
+        <h2 className="w-[50%]">Onboarded:</h2>
+        <p>{item&&item.onboarded ? "Yes" : "No"}</p>
       </div>
       {item&&item.onboarded && (
-        <div className="flex flex-col">
-          <div className="flex flex-row">
-            <h2>Onboarded On::</h2>
-            <p className="ml-2 border-gray-100 rounded-md w-full">{item&&`${item.onboardDate}`}</p>
+        <>
+          <label className="flex flex-row p-2 bg-[#b8edd9] w-[70%] mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400">
+            <h2 className="w-[50%]">Onboarded On:</h2>
+            <p className="border-gray-100 rounded-md">{item&&`${item.onboardDate}`}</p>
+          </label>
+          <div className="flex flex-row p-2 bg-[#b8edd9] w-[70%] mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400">
+            <h2 className="w-[50%]">Package:</h2>
+            <p className="border-gray-100 rounded-md">&#8358;{item&&item.package}</p>
           </div>
-          <div className="flex flex-row">
-            <h2>Package:</h2>
-            <p className="ml-2 border-gray-100 rounded-md w-full">&#8358;{item&&item.package}</p>
-          </div>
-          <div className="flex flex-row">
-            <h2>Trained:</h2>
-            <p className="ml-2 border-gray-100 rounded-md w-full">{item&&item.trained ? "Yes" : "No"}</p>
+          <div className="flex flex-row p-2 bg-[#b8edd9] w-[70%] mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400">
+            <h2 className="w-[50%]">Trained:</h2>
+            <p className="border-gray-100 rounded-md">{item&&item.trained ? "Yes" : "No"}</p>
           </div>
           {item&&item.trained &&
             (
-              <div className="flex flex-col">
-                <div className="flex flex-row items-center align-middle">
-                  <h2>Trained On:</h2>
-                  <p className="ml-2 border-gray-100 rounded-md w-full">{item&&`${item.trainDate}`}</p>
+              <div className="flex flex-col w-[70%]">
+                <div className="flex flex-row p-2 bg-[#b8edd9] w-full mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400 items-center align-middle">
+                  <h2 className="w-[50%]">Trained On:</h2>
+                  <p className="border-gray-100 rounded-md">{item&&`${item.trainDate}`}</p>
                 </div>
-                <div className="flex flex-row items-center align-middle">
-                  <h2>Current Term:</h2>
-                  <p className="ml-2 border-gray-100 rounded-md w-full">{item&&item.currentTerm}</p>
+                <div className="flex flex-row p-2 bg-[#b8edd9] w-full mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400 items-center align-middle">
+                  <h2 className="w-[50%]">Current Term:</h2>
+                  <p className="border-gray-100 rounded-md">{item&&item.currentTerm}</p>
                 </div>
-                <h2>Payment</h2>
+                <h2 className="w-[50%]">Payment</h2>
                 {payList}
-                <div className="flex flex-row items-center align-middle">
-                  <h2>Total Payable:</h2>
-                  <p className="ml-2 border-gray-100 rounded-md w-full">&#8358;{item&&item.totalPayable}</p>
+                <div className="flex flex-row p-2 bg-[#b8edd9] w-full mb-2 rounded-sm shadow-sm shadow-slate-400 text-orange-400 items-center align-middle">
+                  <h2 className="w-[50%]">Total Payable:</h2>
+                  <p className="border-gray-100 rounded-md">&#8358;{item&&item.totalPayable}</p>
                 </div>
               </div>
             )}
-        </div>
+        </>
       )}
       <div className="gap-4 flex pl-[40%]">
         <button className="bg-[#1e253a] text-white shadow-md shadow-gray-100 hover:bg-slate-600 p-2 rounded-md mt-2">Close</button>
@@ -240,20 +240,23 @@ function SchoolView() {
   )
               
   return sLoading? <div>Loading...</div>: (
-    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }} className="pl-[280px] flex items-center content-center fixed top-0 left-0 right-0 bottom-0 bgc-[#3f33]"
+    <div className="sm:pl-[280px] pl-4 flex items-center content-center fixed top-0 left-0 right-0 bottom-0 bg-white"
     >
-      <div className="bg-gray-100 p-5 rounded-lg relative w-[90%] xl:ml-[10%] xl:w-[60%]">
-        <div className="flex text-orange-400 p-2 gap-2 rounded-lg bg-slate-300 pl-[10%]">
+      <div className=" p-5 rounded-lg mt-16 sm:mt-0 bg-slate-200 flex flex-col relative w-[90%] xl:ml-[10%] xl:w-[70%]">
+        <div className="flex text-orange-400 p-2 gap-2 text-2xl rounded-lg bg-slate-300 pl-[10%]">
           <School />
           <h2>{item&&item.name}</h2>
         </div>
         {update ?changeView:viewContent}
-        <button className="absolute top-2 right-2 bg-transparent border-0  text-lg cursor-pointer" >
+        {/* <button className="absolute top-2 right-2 bg-transparent border-0  text-lg cursor-pointer" >
           X
-        </button>
+        </button> */}
       </div>
     </div>
   );
 }
 
 export default SchoolView
+
+// NAG2636
+// Test@1234

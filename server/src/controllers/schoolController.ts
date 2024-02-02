@@ -12,7 +12,7 @@ export const getSchools = async (req:Request, res:Response) => {
     const payment = school?.totalPayable()
     return res.status(200).json({...school.toJSON(), totalPayable:payment})
   }
-  const schools = await schoolsModel.find({}).exec(); 
+  const schools = await schoolsModel.find({}).sort({_id:-1}); 
   const sls = schools.map(school => {
     const totalPayable = school.totalPayable()
     return {...school.toJSON(), totalPayable}

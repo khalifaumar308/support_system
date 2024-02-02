@@ -36,7 +36,8 @@ const SidebarItemCollapse = ({ item }: Props) => {
               backgroundColor: colorConfigs.sidebar.hoverBg
             },
             paddingY: "12px",
-            paddingX: "24px"
+            paddingX: "24px",
+            fontSize: "18px",
           }}
         >
           <ListItemIcon sx={{
@@ -59,7 +60,7 @@ const SidebarItemCollapse = ({ item }: Props) => {
             {item.child?.map((route, index) => (
               route.sidebarProps ? (
                 route.child ? (
-                  <SidebarItemCollapse item={route} key={index} />
+                  <SidebarItemCollapse item={route} key={index} /> 
                 ) : (
                   <SidebarItem item={route} key={index} />
                 )

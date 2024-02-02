@@ -12,7 +12,7 @@ export const getAffiliates = async (req: Request, res: Response) => {
     return res.status(404).json({message:"Affiliate not found"})
   }
 
-  const affiliates = await AffiliateModel.find({});
+  const affiliates = await AffiliateModel.find({}).sort({ _id: -1 });
   return res
       .status(200).json({affiliates})
 
