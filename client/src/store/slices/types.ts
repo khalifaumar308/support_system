@@ -54,7 +54,8 @@ export type visits = {
   address: string;
   comment: string;
   _id?: string;
-  createdAt?: Date
+  createdAt?: Date;
+  userName: string;
 }
 
 export type affilaiteSchool = {

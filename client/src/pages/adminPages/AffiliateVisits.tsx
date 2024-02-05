@@ -15,6 +15,7 @@ const AffiliateVisits = () => {
     comment: '',
     _id: '',
     createdAt: new Date(''),
+    userName: '',
   });
 
   console.log(users)
