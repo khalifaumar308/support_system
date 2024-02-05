@@ -9,3 +9,4 @@ export { default as AffiliateDashboard } from './affiliatePages/AffiliateDashboa
 export { default as Visits } from './affiliatePages/Visits';
 export { default as MySchools } from './affiliatePages/MySchools';
 export { default as Messages } from './adminPages/Messages';
+export { default as AffiliateVisits } from './adminPages/AffiliateVisits';
