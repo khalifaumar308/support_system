@@ -1,5 +1,21 @@
 export type user = { name: string, email: string, token: 'string', role: string, id:string }
 export type luser = { email: string, password: string };
+
+export type staff = {
+  email: string;
+  name: string;
+  role: string;
+  department: string;
+  password: string;
+};
+
+export type admin = {
+  email: string;
+  name: string;
+  role: string;
+  password: string;
+};
+
 export type afiliate = {
   email: string;
   name: string;
@@ -8,6 +24,19 @@ export type afiliate = {
   address?: string;
   schoolsReferred: {schoolId:string, percentage:number}[];
   _id?: string;
+}
+
+export type appUser = {
+  email: string;
+  name: string;
+  phone?: string;
+  role?: string;
+  address?: string;
+  location?: string;
+  schoolsReferred?: {schoolId:string, percentage:number}[];
+  _id?: string;
+  rank?: string;
+  department?: string; 
 }
 export type lafiliate = {
   id?: string | false;

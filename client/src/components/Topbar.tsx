@@ -1,7 +1,7 @@
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import { useNavigate } from "react-router-dom";
 import { useGetUsersQuery, useGetSchoolsQuery } from "../store/slices/api/apiEndpoints";
-import { afiliate, school } from '../store/slices/types';
+import { appUser, school } from '../store/slices/types';
 import SchoolIcon from '@mui/icons-material/School';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 
@@ -11,8 +11,8 @@ const Topbar = () => {
   const loading = isLoading || sLoading
   const navigate = useNavigate()
 
-  const formatResult = (item:afiliate|school) => {
-    return ('schoolsReferred' in item) ? (
+  const formatResult = (item:appUser|school) => {
+    return ('role' in item) ? (
       <div onClick={() => navigate(`/user/userview/${item._id}`)} className="bg-[#2d3e57] text-white mb-1 cursor-pointer p-2 flex mr-1 rounded-md shadow-sm shadow-black">
         <AccountCircleSharpIcon />
         <h2 className="ml-1 ">{item.name}</h2>
@@ -24,21 +24,21 @@ const Topbar = () => {
         </div>
     )
   }
+  // console.log(users)
+  const items = loading?[]:isError?[]:(users && schools)?[...users.users, ...schools.schools]: []
 
-  const items = loading?[]:isError?[]:users && schools?[...users.affiliates, ...schools.schools]: []
-
-  const handleOnSearch = (string:  string , results:(afiliate|school)[]) => {
+  const handleOnSearch = (string:  string , results:(appUser|school)[]) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
     console.log(string, results)
   }
 
-  const handleOnHover = (result: afiliate | school) => {
+  const handleOnHover = (result: appUser | school) => {
     // the item hovered
     console.log(result)
   }
 
-  const handleOnSelect = (item:afiliate|school) => {
+  const handleOnSelect = (item:appUser|school) => {
     // the item selected
     // console.log(item)
     if ('schoolsReferred' in item) {

@@ -29,11 +29,12 @@ const Dashboard = () => {
           }
         }
       })
-      return [total, projMoney, payedMoney, unboardedS, trainedS]
+      const totalAffiliates = users?.users.filter(({role}) => role==='Affiliate').length
+      return [total, projMoney, payedMoney, unboardedS, trainedS, totalAffiliates]
     }
-    return [0,0,0,0,0]
-  }, [loading, schools])
-  const [students, pMoney, payed, numOnboard, numTrained] = totalStudents()
+    return [0, 0, 0, 0, 0, 0];
+  }, [loading, schools, users])
+  const [students, pMoney, payed, numOnboard, numTrained, totalAffiliates] = totalStudents()
 
   return loading? <div>Loading...</div> :(
     <div>
@@ -59,7 +60,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className='mt-4'>Total Affiliates: { users?.affiliates.length }</div>
+        <div className='mt-4'>Total Affiliates: { totalAffiliates }</div>
       </div>
 
     </div>

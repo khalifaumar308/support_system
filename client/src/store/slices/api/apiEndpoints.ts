@@ -1,5 +1,9 @@
 import { apiSlice } from "./apiSlice";
-import { user, luser, afiliate, lafiliate, school, lschool, schoolUpdate, visits, affilaiteSchool, notification, message } from "../types";
+import {
+  user, luser, afiliate, lafiliate, school, lschool,
+  schoolUpdate, visits, affilaiteSchool, notification, message,
+  staff, admin, appUser
+} from "../types";
 
 export const appApiEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -15,13 +19,13 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
       //   response: { status: string | number },
       // ) => response.status,
     }),
-    getUsers: builder.query<{ affiliates: afiliate[] }, lafiliate>({
+    getUsers: builder.query<{ users: appUser[] }, lafiliate>({
       query: (credentials) => ({
-        url: credentials.id ? `user/affiliates/${credentials.id}` : "user/affiliates/",
+        url: credentials.id ? `user/users/${credentials.id}` : "user/users/",
         providesTags: ["Users"],
       })
     }),
-    createUser: builder.mutation<lschool, afiliate>({
+    createUser: builder.mutation<lschool, afiliate|staff|admin>({
       query: (credentials) => ({
         url: "user/register",
         method: "POST",

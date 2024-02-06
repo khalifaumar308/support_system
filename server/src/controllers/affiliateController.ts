@@ -1,3 +1,4 @@
+import { UsersModel } from "../models";
 import AffiliateModel from "../models/AffiliateModel";
 import schoolsModel from "../models/schoolsModel";
 import { Request, Response } from "express";
@@ -14,15 +15,13 @@ export const getAffiliates = async (req: Request, res: Response) => {
 
   const affiliates = await AffiliateModel.find({}).sort({ _id: -1 });
   return res
-      .status(200).json({affiliates})
-
+    .status(200).json({affiliates})
 }
 
 export const getAffiliateSchools = async (req: Request, res: Response) => {
   const id = req.params[0]
   if (id) {
-    const affiliat = await AffiliateModel.findOne({ userId: id }).exec();
-    // console.log(affiliat)
+    const affiliat = await UsersModel.findById(id).exec();
     if (!affiliat) {
       return res.status(404).json({message:"Affiliate not found"})
     }
@@ -32,7 +31,8 @@ export const getAffiliateSchools = async (req: Request, res: Response) => {
       const { schoolId, percentage } = schools[index];
       const school = await schoolsModel.findById(schoolId).lean().exec();
       if (school) {
-        allSchools.push({...school, percentage})
+        const perc = school.affiliatePercentage
+        allSchools.push({...school, perc})
       } else {
         console.log(`affilaite school ${schoolId} not found`)
       }
@@ -52,13 +52,13 @@ export const createAffiliateSchool = async (req: Request, res: Response) => {
     }
     try {
       const school = await schoolsModel.create(schoolData)
-      const user = await AffiliateModel.findOne({ userId })
+      const user = await UsersModel.findById(userId)
       if (!user) {
         return res.status(404).json({message:"user not found"})
       }
       const schoolsReferred = user?.schoolsReferred
       schoolsReferred?.push({ schoolId: school.id, percentage: 0 });
-      const update = await AffiliateModel.findByIdAndUpdate(user.id, { schoolsReferred });
+      const update = await UsersModel.findByIdAndUpdate(user.id, { schoolsReferred });
       return res.status(201).json({ message: "School Created" });
     } catch (error) {
       console.log(error)

@@ -66,7 +66,6 @@ const AddSchool = () => {
       setTimeout(() => (navigate('/affiliate/schools/all')), 3000)
     }
   }
-
   return open ? (
     <Modal onClose={() => setOpen(false)}>
       <form className="flex flex-col" onSubmit={register}>

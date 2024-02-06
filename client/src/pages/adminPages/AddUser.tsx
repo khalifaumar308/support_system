@@ -28,6 +28,8 @@ const AddUser = () => {
   const [referred, setReferred] = useState<schoolReferred[]>([]);
   const [toShow, setToShow] = useState<school[]>([]);
   const [errorMsg, setError] = useState('');
+  const [department, setDepartment] = useState('---Choose---');
+  const [rank, setRank] = useState('');
   const [percentages, setPercentages] = useState<{ [key: number]: number; }>({})
   const navigate = useNavigate()
   
@@ -99,18 +101,17 @@ const AddUser = () => {
       name,
       email,
       role,
-      phone,
       password,
-      address,
-      location,
-      schoolsReferred: rfr
-    }
+    };
+    const userData = role === 'Affiliate' ? {
+      ...data, address, location, schoolsReferred: rfr, phone} : (role==='Staff'? {...data, department, rank}: {...data})
     // console.log(rfr)
     try {
-      await createUser(data)
-    } catch (error) {
-      setError('School Created success')
+      await createUser(userData)
+      setError('User Created success')
       setTimeout(() => (navigate('/user/users/all')), 3000)
+    } catch (error) {
+      setError('User Creation Failed')
     }
   }
   return (
@@ -145,6 +146,25 @@ const AddUser = () => {
               <option>Affiliate</option>
             </select>
           </label>
+            {role === 'Staff' && (
+              <>
+                <label className="flex flex-col">
+                  Department
+                  <select name="depertment" value={department} onChange={(e) => setDepartment(e.target.value)} className="active:border-gray-300 mb-2 border-2 p-2 bg-white border-gray-100 rounded-md w-[50%]" >
+                    <option>--Choose---</option>
+                    <option>Support</option>
+                    <option>Data Capture</option>
+                    <option>Bussiness</option>
+                    <option>Development</option>
+                  </select>
+                </label>
+                <label className="flex flex-col">Rank
+                  <input value={rank} onChange={(e) => setRank(e.target.value)} name="rank" placeholder="Rank"
+                    className="active:border-gray-300 mb-2 border-2 p-2 border-gray-100 rounded-md w-[80%]" />
+                </label>
+              </>
+              
+          )}  
           {role === 'Affiliate' &&
             (<div>
               <label className="flex flex-col">Phone Number

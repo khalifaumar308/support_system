@@ -19,7 +19,6 @@ const schoolReferredSchema = new Schema<schoolReferred>({
   percentage: Number
 })
 
-
 const affiliateSchema = new Schema<afiliate>({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   email: {

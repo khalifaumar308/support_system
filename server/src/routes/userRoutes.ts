@@ -1,5 +1,5 @@
 import { getAffiliates, getAffiliateSchools, createAffiliateSchool } from "../controllers/affiliateController";
-import { userLogin, registerUser, refreshToken } from "../controllers/userController";
+import { userLogin, registerUser, refreshToken, getUsers } from "../controllers/userController";
 import { updateSchool, getSchools, createSchool } from "../controllers/schoolController";
 import { createVisit, getVisits, deleteVisit, getSingleVisit } from "../controllers/visitsController";
 import { saveNotification, deleteUserNotifications, getUserNotifications } from "../controllers/notificationController";
@@ -24,6 +24,7 @@ userRouter
   .post('/login', userLogin)
   .post('/register', registerUser)
   .post('/schools', createSchool)
+  .get('/users/*', getUsers)
   .get('/refresh', refreshToken)
   .get('/affiliates/*', getAffiliates)
   .get('/schools/*', getSchools)

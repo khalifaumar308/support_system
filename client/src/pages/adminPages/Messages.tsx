@@ -14,7 +14,6 @@ const Messages = () => {
   const userMessages = isLoading || isError ? [] : messages?.messages;
   const [currentMessageData, setCurrentMessageData] = useState(isLoading ? { title: 'Title', content: "Content" }
     : userMessages ? userMessages[0] : { title: 'Title', content: "Content" })
-  console.log(userMessages)  
 
   const messageDivs = userMessages?.map((message, id) => {
     const dateSent = new Date(message.createdAt)

@@ -1,4 +1,4 @@
-import { useGetVisitsQuery, useGetUsersQuery } from "../../store/slices/api/apiEndpoints";
+import { useGetVisitsQuery } from "../../store/slices/api/apiEndpoints";
 import { DirectionsWalk } from "@mui/icons-material";
 import { useState } from "react";
 import Visit from "../../components/adminComponents/Visit";
@@ -6,7 +6,7 @@ import { visits } from "../../store/slices/types";
 
 const AffiliateVisits = () => {
   const { data: visits, isLoading } = useGetVisitsQuery({ id: '' }, { refetchOnMountOrArgChange: true });
-  const { data: users, isLoading: loading } = useGetUsersQuery({});
+  // const { data: users, isLoading: loading } = useGetUsersQuery({});
   const [open, setOpen] = useState(false);
   const [currentVisit, setCurrentVisit] = useState<visits>({
     userId: '',
@@ -17,9 +17,6 @@ const AffiliateVisits = () => {
     createdAt: new Date(''),
     userName: '',
   });
-
-  console.log(users)
-
   const onClose = () => {
     setOpen(false);
   };
@@ -39,7 +36,7 @@ const AffiliateVisits = () => {
     )
   });
 
-  return (isLoading||loading) ? (<div>Loading...</div>) : (
+  return (isLoading) ? (<div>Loading...</div>) : (
     <div>
       <div>{visitsDiv}</div>
       {open &&

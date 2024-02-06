@@ -1,5 +1,6 @@
 import UsersModel from "../models/UsersModel";
 import AffiliateModel from "../models/AffiliateModel";
+import StaffModel from "../models/StaffModel";
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
@@ -9,6 +10,23 @@ interface tokenDecode {
   email: string;
   name: string;
   role: string;
+}
+
+export const getUsers:RequestHandler =async (req, res) => {
+  const id = req.params[0];
+  try {
+    if (id) {
+      const user = await UsersModel.findById(id).lean().exec();
+      if (user) {
+        return res.status(200).json(user);
+      }
+      return res.status(400).json({ message: "User not found" });
+    }
+    const users = await UsersModel.find().sort("name").select("-password -__v").lean().exec();
+    return res.status(200).json({ users });
+  } catch (error) {
+    return res.status(400).json(error)
+  }
 }
 
 export const userLogin: RequestHandler = async (req, res) => {
@@ -88,11 +106,12 @@ export const userLogin: RequestHandler = async (req, res) => {
 };
 
 export const registerUser:RequestHandler = async (req, res) => {
-  const { email, password, name, role } = req.body;
+  const data = req.body;
+  const { email, password, name, role, rank } = data
   if (!email || !password)
     return res
       .status(400)
-      .json({ message: "Username and password are required." });
+      .json({ message: "Email and password are required." });
 
   // check for duplicate usernames in the db
   const duplicate = await UsersModel.findOne({ email }).exec();
@@ -106,19 +125,18 @@ export const registerUser:RequestHandler = async (req, res) => {
 
     //create and store the new user
     const user = await UsersModel.create({
-      email,
+      ...data,
       password: hashedPwd,
-      name,
-      role
     });
 
     if (role === "Affiliate") {
-      const { phone, schoolsReferred, location } = req.body
-      await AffiliateModel.create({
-        email, name, phone, schoolsReferred, userId:user._id, location
-      });
+      // const { phone, schoolsReferred, location } = req.body
+      // await AffiliateModel.create({
+      //   email, name, phone, schoolsReferred, userId:user._id, location
+      // });
       await sendMail({email, name, password})
     }
+
 
     console.log(`New ${role}: ${name} ${email} created!`);
     return res.status(201).json({ success: `New ${role} ${name} ${email} created!` });
