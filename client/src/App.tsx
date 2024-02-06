@@ -5,15 +5,15 @@ import {
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-import ClientLogin from "./pages/ClientLogin";
-import PartnerLogin from "./pages/PartnerLogin";
 import MainLayout from "./components/layout/MainLayout";
-import ResponsiveDrawer from "./pages/ResponsiveDrawer";
-import { routes, afroutes } from "./routes";
+import { routes, afroutes, stroutes } from "./routes";
 import { SocketContext, socket } from './context/socket';
 import { Notifications } from 'react-push-notification';
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "./store/slices/api/authSlice";
 
 const App = () => {
+  const user = useSelector(selectCurrentUser);
   return (
     <SocketContext.Provider value={socket}>
       <Notifications />
@@ -21,17 +21,21 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Starter />} />
           <Route path="/login" element={<StaffLogin />} />
-          <Route path="/client/login" element={<ClientLogin />} />
-          <Route path="/partner/login" element={<PartnerLogin />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          <Route path="/user" element={<MainLayout />} >
-            {routes}
-          </Route>
-          {/* <Route path="/view/*" element={<View />} ></Route> */}
+          {(user && user.role === 'Admin') &&
+            <Route path="/user" element={<MainLayout />} >
+              {routes}
+            </Route>
+          }
+          {(user && user.role === 'Affiliate') &&
             <Route path="/affiliate" element={<MainLayout />} >
               {afroutes}
             </Route>
-            <Route path="/drawer" element={<ResponsiveDrawer />} />
+          }
+          {(user && user.role === 'Staff') &&
+            <Route path="/staff" element={<MainLayout />} >
+              {stroutes}
+            </Route>
+          }
         </Routes>
       </Router>
     </SocketContext.Provider>

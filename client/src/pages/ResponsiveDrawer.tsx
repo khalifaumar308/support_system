@@ -27,6 +27,7 @@ import addNotification from 'react-push-notification';
 import { useSelector } from 'react-redux';
 import Popover from '@mui/material/Popover';
 import School from '@mui/icons-material/School';
+import staffRoutes from '../routes/staffRoutes';
 
 const drawerWidth = 240;
 
@@ -40,7 +41,7 @@ export default function ResponsiveDrawer() {
   const width = useRef([window.innerWidth])
   const location = useLocation();
   const { pathname } = location;
-  const routes = pathname.includes('affiliate') ? affiliateRoutes : adminRoutes
+  const routes = pathname.includes('affiliate') ? affiliateRoutes : pathname.includes('staff')? staffRoutes: adminRoutes;
   const notificationNumber = notificationLoading ? '...' : notifications?.notifications.length
   const userNotifications = notificationLoading ? [] : notifications?.notifications;
   const path = location.pathname;

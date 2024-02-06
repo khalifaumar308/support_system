@@ -36,16 +36,17 @@ const Login = () => {
 
   const onSubmitHandler = async () => {
     const userData = await loginUser({ email: userId, password }).unwrap();
-    console.log(userData, isLoading)
-      dispatch(setCredentials({ ...userData }));
-      if (saveUser) {
-        localStorage.setItem("userData", JSON.stringify(userData));
-      }
-      if (userData.role === "Affiliate") {
-        navigate("/affiliate/dashboard")
-      } else {
-        navigate('/user/dashboard')
-      }
+    dispatch(setCredentials({ ...userData }));
+    if (saveUser) {
+      localStorage.setItem("userData", JSON.stringify(userData));
+    }
+    if (userData.role === "Affiliate") {
+      navigate("/affiliate/dashboard")
+    } else if (userData.role === 'Staff') {
+      navigate('/staff/dashboard')
+    } else {
+      navigate('/user/dashboard')
+    }
   }
 
   return (

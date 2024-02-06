@@ -2,11 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Box, Toolbar } from "@mui/material";
 import colorConfigs from "../../configs/colorConfigs";
 import sizeConfigs from "../../configs/sizeConfigs";
-// import Sidebar from "../Sidebar";
-// import Topbar from "../Topbar";
 import ResponsiveDrawer from "../../pages/ResponsiveDrawer";
-// import io from 'socket.io-client';
-// import { useEffect } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { selectCurrentUser } from "../../store/slices/api/authSlice";
 import { useContext, useEffect } from "react";
@@ -29,16 +25,6 @@ const MainLayout = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      {/* <Topbar />
-      <Box
-        component="nav"
-        sx={{
-          width: sizeConfigs.sidebar.width,
-          flexShrink: 0
-        }}
-      >
-      <Sidebar />
-      </Box> */}
       <ResponsiveDrawer />
       <Box
         component="main"
