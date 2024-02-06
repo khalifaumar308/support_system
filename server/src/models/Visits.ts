@@ -5,6 +5,7 @@ type visits = {
   schoolName: string;
   address: string;
   comment: string;
+  userName: string;
 }
 
 const visitsSchema = new Schema<visits>({
@@ -12,6 +13,7 @@ const visitsSchema = new Schema<visits>({
   schoolName: String,
   address: String,
   comment: String,
+  userName: String,
 }, { timestamps: true });
 
 export const VisitsModel =  model('Visits', visitsSchema);

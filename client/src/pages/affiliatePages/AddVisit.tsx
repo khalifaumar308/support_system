@@ -40,6 +40,7 @@ const AddSchool = () => {
       address,
       comment,
       userId: userId || '',
+      userName: user.name || '',
     }
     try {
       await createVisit(data)
