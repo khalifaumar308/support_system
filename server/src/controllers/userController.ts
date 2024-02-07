@@ -1,6 +1,4 @@
 import UsersModel from "../models/UsersModel";
-import AffiliateModel from "../models/AffiliateModel";
-import StaffModel from "../models/StaffModel";
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
