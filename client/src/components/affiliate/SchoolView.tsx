@@ -7,7 +7,7 @@ const SchoolView = () => {
   const params = useParams();
   const { data: schools, isLoading: sLoading } = useGetSchoolsQuery({ id: false })
   const item = schools?.schools.filter(school => school._id === params.id)[0]
-  console.log(params.percentage)
+  // console.log(params.percentage)
 
   const paymentL = sLoading ? 0 : item?.trained ? item?.payment?.length : 0
   const payList = []
@@ -100,14 +100,14 @@ const SchoolView = () => {
     </div>
   ) : <div>Loading....</div>;
   return sLoading ? <div>Loading...</div> : (
-    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }} className="pl-[280px] flex items-center content-center fixed top-0 left-0 right-0 bottom-0 bgc-[#3f33]"
+    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }} className="pl-4 sm:pl-[280px] flex items-center content-center fixed -top-[10%] sm:top-0 left-0 right-0 bottom-0 bgc-[#3f33]"
     >
       <div className="bg-gray-100 p-5 rounded-lg relative w-[90%] xl:ml-[10%] xl:w-[60%]">
-        <div className="flex text-orange-400 p-2 gap-2 rounded-lg bg-slate-300 pl-[10%]">
+        <div className="flex text-orange-400 p-2 gap-2 rounded-lg bg-slate-300 sm:pl-[10%]">
           <School />
           <h2>{item&&item.name}</h2>
         </div>
-        { viewContent}
+        { viewContent }
         <button className="absolute top-2 right-2 bg-transparent border-0  text-lg cursor-pointer" >
           X
         </button>

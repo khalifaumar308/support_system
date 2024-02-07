@@ -22,19 +22,20 @@ import adminRoutes from '../routes/adminRoutes';
 import { useLocation } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import { useContext, useEffect } from 'react';
-import { useGetNotificationsQuery } from '../store/slices/api/apiEndpoints';
+import {  useGetMessagesQuery } from '../store/slices/api/apiEndpoints';
 import addNotification from 'react-push-notification';
 import { useSelector } from 'react-redux';
-import Popover from '@mui/material/Popover';
-import School from '@mui/icons-material/School';
+// import Popover from '@mui/material/Popover';
+// import School from '@mui/icons-material/School';
 import staffRoutes from '../routes/staffRoutes';
 
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
   const user = useSelector(selectCurrentUser);
-  const { data:notifications, isLoading, isFetching, refetch } = useGetNotificationsQuery({ id: user.id || '' });
-  const notificationLoading = isLoading || isFetching;
+  // const { data: notifications, isLoading, isFetching, refetch } = useGetNotificationsQuery({ id: user.id || '' });
+  const { data: messages, refetch:mrefech } = useGetMessagesQuery(user.id || '');
+  // const notificationLoading = isLoading || isFetching;
   const socket = useContext(SocketContext);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -42,38 +43,40 @@ export default function ResponsiveDrawer() {
   const location = useLocation();
   const { pathname } = location;
   const routes = pathname.includes('affiliate') ? affiliateRoutes : pathname.includes('staff')? staffRoutes: adminRoutes;
-  const notificationNumber = notificationLoading ? '...' : notifications?.notifications.length
-  const userNotifications = notificationLoading ? [] : notifications?.notifications;
+  // const notificationNumber = notificationLoading ? '...' : notifications?.notifications.length
+  // const userNotifications = notificationLoading ? [] : notifications?.notifications;
   const path = location.pathname;
   const splited = path.split('/');
   const currentFeature = splited[2];
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const unreadmessages = messages?.messages.filter(msg=> msg.read === false).length ?? 0;
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+
+  // const open = Boolean(anchorEl);
+  // const id = open ? 'simple-popover' : undefined;
 
   useEffect(() => {
     socket.on('recieveMessage', (data) => {
       addNotification({
           title: data.title,
           subtitle: data.senderName,
-          message: `New School Registered`,
+          message: data.title,
           theme: 'darkblue',
           native: true // when using native, your OS will handle theming.
         })
-      refetch()
+      mrefech()
       return
     })
-  }, [socket, refetch]);
+  }, [socket, mrefech]);
   
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -153,9 +156,9 @@ export default function ResponsiveDrawer() {
         </Toolbar>
         <Toolbar sx={{ position: "relative", width: "100%" }}>
           <div className='absolute text-xs text-white bg-red-600 p-1 z-10 right-[9.5rem] top-2 rounded-full'>
-            <button onClick={handleClick}>{ notificationNumber }</button>
+            <button>{ unreadmessages }</button>
           </div>
-          <Popover
+          {/* <Popover
             id={id}
             open={open}
             anchorEl={anchorEl}
@@ -175,7 +178,7 @@ export default function ResponsiveDrawer() {
               )
             })}
             </div>
-          </Popover>
+          </Popover> */}
           <div className='text-orange-500 absolute right-8 flex gap-2 align-middle '>
             <NotificationsNoneRoundedIcon />
             <AccountCircleIcon />

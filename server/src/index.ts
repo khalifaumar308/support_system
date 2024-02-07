@@ -5,7 +5,8 @@ import { saveSingleNotification } from './controllers/notificationController';
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { Server } from 'socket.io';
-import http from 'http'
+import http from 'http';
+import { UsersModel } from './models';
 
 import { logger } from './middleware/logRequests';
 import { userRouter } from './routes/userRoutes';
@@ -50,8 +51,6 @@ const addNewUser = (userId:string, socketId:string, name:string) => {
 const removeUser = (socketId:string) => {
   onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
 };
-
-
 const getUser = (userId:string) => {
   return onlineUsers.find((user) => user.userId === userId);
 };
@@ -86,18 +85,28 @@ const connectDB = async () => {
   }
 };
 
-io.on("connection", (socket) => {
+io.on("connection", (socket) =>  {
   socket.on("newUser", (data) => {
     addNewUser(data.id, socket.id, data.name);
+    if (data.role==='Admin') {
+      socket.join('Admins-Group')
+    }
   });
 
-  socket.on("sendMessage", (data) => {
-    const receiver = getUser(data.recieverId);
-    if (receiver) {
-      console.log(receiver, 'online')
-      io.to(receiver.socketId).emit("recieveMessage", data);
-    };
-    saveMessage(data)
+  socket.on("sendMessage", async (data) => {
+    const receivers = await UsersModel.find({ role: "Admin" }).lean().exec()
+    const ids = receivers.map((rec => `${rec._id}`));
+    if (['School Registered', 'New School Visited'].includes(data.title)) {
+      io.to('Admins-Group').emit('recieveMessage', data);
+      ids.forEach(id => saveMessage({ ...data, recieverId: id }));
+    } else {
+      const receiver = getUser(data.recieverId);
+      if (receiver) {
+        // console.log(receiver, 'online')
+        io.to(receiver.socketId).emit("recieveMessage", data);
+      };
+      saveMessage(data)
+    }
     // saveSingleNotification({senderId, recieverId, type, url, senderName})
   });
 

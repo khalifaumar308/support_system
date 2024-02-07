@@ -60,10 +60,10 @@ const AddSchool = () => {
       });
       setError('School Created success')
       const dataSent = Object.values(schoolData).find(val => val === false);
-      const content = `New School Referred by ${data.name}\n
-      All required Data sent: ${dataSent===false? 'No':'Yes'}\nCooments: ${comment}`
+      const content = `New School Referred by ${user.name}\n
+      All required Data sent: ${dataSent===false? 'No':'Yes'}::Comments: ${comment}`
       sendMessage(content)
-      setTimeout(() => (navigate('/affiliate/schools/all')), 3000)
+      setTimeout(() => (navigate('/affiliate/schools/all')), 2000)
     }
   }
   return open ? (

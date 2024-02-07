@@ -5,9 +5,13 @@ import { visits } from "../../store/slices/types";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import { selectCurrentUser } from "../../store/slices/api/authSlice";
+import { useCallback } from "react";
+import { useContext } from "react";
+import { SocketContext } from "../../context/socket";
 
 const AddSchool = () => {
   const user = useAppSelector(selectCurrentUser);
+  const socket = useContext(SocketContext);
   const userId = user.id;
   const [open, setOpen] = useState<boolean>(true);
   const [createVisit, { isLoading, isError, error }] = useCreateVisitMutation();
@@ -16,6 +20,17 @@ const AddSchool = () => {
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [address, setAddress] = useState('');
+
+
+  const sendMessage = useCallback((content: string) => {
+    socket.emit('sendMessage', {
+      sendId: user.id,
+      recieverId: "65a94085d9225e23a40f683b",
+      title: "New School Visited",
+      senderName: user.name,
+      content: content
+    })
+  }, [socket, user])
 
   useEffect(() => {
     if (isError) {
@@ -43,8 +58,9 @@ const AddSchool = () => {
       userName: user.name || '',
     }
     try {
-      await createVisit(data)
-      setError('School Created success')
+      await createVisit(data);
+      sendMessage(`New school visited by ${user.name}, School Name:${name}`)
+      setError('Visit Registered success')
       setTimeout(() => (navigate('/affiliate/visits/all')), 2000)
     } catch (err) {
       console.log(err)
