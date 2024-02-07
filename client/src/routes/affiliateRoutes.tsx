@@ -3,12 +3,15 @@ import { AffiliateDashboard, Visits, MySchools } from "../pages";
 import { UsersLayout } from "../pages";
 import AddSchool from "../pages/affiliatePages/AddSchool";
 import AddVisit from "../pages/affiliatePages/AddVisit";
+// import Message from "../pages/affiliatePages/Message";
 // import VisitView from "../components/affiliate/VisitView";
 import SchoolView from "../components/affiliate/SchoolView";
+import {Messages} from "../pages";
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import DirectionsWalkRoundedIcon from '@mui/icons-material/DirectionsWalkRounded';
+import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
 
 
 const affiliateRoutes: RouteType[] = [
@@ -76,6 +79,15 @@ const affiliateRoutes: RouteType[] = [
     ]
   },
   {
+    path: "message",
+    element: <Messages />,
+    state: "message",
+    sidebarProps: {
+      displayText: "Messages",
+      icon: <MessageOutlinedIcon />
+    }
+  },
+  {
     path: "/affiliate/schoolview/:id/:percentage",
     element: <SchoolView />,
     state: "schoolview",
@@ -83,7 +95,6 @@ const affiliateRoutes: RouteType[] = [
       displayText: ""
     }
   },
-
 ]
 
 export default affiliateRoutes
