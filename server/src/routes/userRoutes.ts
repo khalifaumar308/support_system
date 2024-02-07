@@ -4,6 +4,7 @@ import { updateSchool, getSchools, createSchool } from "../controllers/schoolCon
 import { createVisit, getVisits, deleteVisit, getSingleVisit } from "../controllers/visitsController";
 import { saveNotification, deleteUserNotifications, getUserNotifications } from "../controllers/notificationController";
 import { getMessages, updateStatus, deleteMessage } from "../controllers/messageController";
+import { getTasks, createTask, deleteTask, updateTask } from "../controllers/tasksController";
 import { Router } from "express";
 import { sendMail } from "../services/email";
 import { Request, Response } from "express";
@@ -42,3 +43,7 @@ userRouter
   .get('/message/*', getMessages)
   .delete('/message/*', deleteMessage)
   .put('/message/*', updateStatus)
+  .get('/task/', getTasks)
+  .post('/task/', createTask)
+  .put('/task/', updateTask)
+  .delete('/delete', deleteTask)
