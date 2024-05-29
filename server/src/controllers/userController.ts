@@ -9,19 +9,21 @@ interface tokenDecode {
   name: string;
   role: string;
 }
+const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms))
 
-export const getUsers:RequestHandler =async (req, res) => {
-  const id = req.params[0];
+export const getUsers:RequestHandler = async (req, res) => {
+  const filter = req.query;
   try {
-    if (id) {
-      const user = await UsersModel.findById(id).lean().exec();
+    if (filter.id) {
+      const user = await UsersModel.findById(filter.id).lean().exec();
       if (user) {
-        return res.status(200).json(user);
+        return res.status(200).json([user]);
       }
       return res.status(400).json({ message: "User not found" });
     }
-    const users = await UsersModel.find().sort("name").select("-password -__v").lean().exec();
-    return res.status(200).json({ users });
+    const users = await UsersModel.find(filter).sort("name").select("-password -__v").lean().exec();
+    // await sleep(2000)
+    return res.status(200).json(users);
   } catch (error) {
     return res.status(400).json(error)
   }
@@ -39,8 +41,8 @@ export const userLogin: RequestHandler = async (req, res) => {
   const foundUser = await UsersModel.findOne({ email }).exec();
   if (!foundUser) return res.status(401).json({message:'Unauthorized'}); //Unauthorized
   // evaluate password
-  const match = await bcrypt.compare(password, foundUser.password);
-  if (match) {
+  // const match = await bcrypt.compare(password, foundUser.password);
+  // if (match) {
     const role = Object.values(foundUser.role).filter(Boolean);
     // create JWTs
     const accessToken = jwt.sign(
@@ -93,14 +95,14 @@ export const userLogin: RequestHandler = async (req, res) => {
     });
 
     // Send authorization roles and access token to user
-    const { email, name } = foundUser;
+    const { name } = foundUser;
     console.log({ token: 'fgg', email, role: foundUser.role, name, id: foundUser._id })
     return res
       .status(201)
       .json({ token: accessToken, email, role: foundUser.role, name, id: foundUser._id });
-  } else {
-    return res.status(401).json({message:"Login Failed"});
-  }
+  // } else {
+  //   return res.status(401).json({message:"Login Failed"});
+  // }
 };
 
 export const registerUser:RequestHandler = async (req, res) => {

@@ -3,21 +3,22 @@ import { Request, Response } from "express";
 
 
 export const getSchools = async (req:Request, res:Response) => {
-  const id = req.params[0] 
+  const id = req.params[0] || req.query["id"]
+  console.log(id)
   if (id) {
     const school = await schoolsModel.findById(id).exec()
     if (!school) {
       return res.status(404).json({message:`school ${id} not found`})
     }
     const payment = school?.totalPayable()
-    return res.status(200).json({...school.toJSON(), totalPayable:payment})
+    return res.status(200).json([{...school.toJSON(), totalPayable:payment}])
   }
-  const schools = await schoolsModel.find({}).sort({_id:-1}); 
+  const schools = await schoolsModel.find(req.query).sort({_id:-1}); 
   const sls = schools.map(school => {
     const totalPayable = school.totalPayable()
     return {...school.toJSON(), totalPayable}
   })
-  return res.status(200).json({schools:sls})
+  return res.status(200).json(sls)
 }
 
 

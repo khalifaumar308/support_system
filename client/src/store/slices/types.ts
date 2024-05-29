@@ -112,3 +112,16 @@ export type message = {
   read: boolean;
   _id?:string
 }
+
+export type task = {
+  deadline: Date;
+  department: string;
+  assignedTo: [{ id: string }];
+  status: string;
+  type: string;
+  createdBy: string;
+  title: string;
+  comments: [{ by: string, comment: string }];
+  details: string;
+  priority: number;
+};

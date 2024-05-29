@@ -2,7 +2,7 @@ import { apiSlice } from "./apiSlice";
 import {
   user, luser, afiliate, lafiliate, school, lschool,
   schoolUpdate, visits, affilaiteSchool, notification, message,
-  staff, admin, appUser
+  staff, admin, appUser, task
 } from "../types";
 
 export const appApiEndpoints = apiSlice.injectEndpoints({
@@ -137,6 +137,29 @@ export const appApiEndpoints = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Notifications"]
     }),
+    createTasks: builder.mutation<lschool, task>({
+      query: (credentials) => ({
+        url: "user/task/",
+        method: "POST",
+        body: credentials,
+        
+      }),
+      invalidatesTags:["Tasks"]
+    }),
+    getTasks: builder.query < { completed:task[], inProgress:task[], pending:task[]}, { id?: string, department?: string }>({
+      query: ({id, department}) => ({
+        url: id?`user/task/?id=${id}`:department?`user/task/?department=${department}`:'user/task/',
+        method:'GET',
+        providesTags: ['Tasks']
+      })
+    }),
+    updateTasks: builder.mutation<lschool, {[key: string]: string;}>({
+      query: (credentials) => ({
+        url: "user/task/",
+        method: "PUT",
+        body: credentials
+      })
+    })
   }),
 });
 // 
@@ -159,4 +182,7 @@ export const {
   useGetMessagesQuery,
   useDeleteMessageMutation,
   useUpdateMessageMutation,
+  useCreateTasksMutation,
+  useGetTasksQuery,
+  useUpdateTasksMutation,
 } = appApiEndpoints;

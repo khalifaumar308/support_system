@@ -14,7 +14,7 @@ import { saveMessage } from './controllers/messageController';
 // import { sendMail } from './services/email';
 
 dotenv.config();
-const allowedOrigins:string[] = ["https://support-system-nine.vercel.app", "http://localhost:5173"];
+const allowedOrigins: string[] = ["https://support-system-nine.vercel.app", "http://localhost:5173"];
 const credentials:RequestHandler = (req, res, next) => {
   const origin = req.headers.origin || '';
   if (allowedOrigins.includes(origin)) {
@@ -23,16 +23,17 @@ const credentials:RequestHandler = (req, res, next) => {
   next();
 };
 
-const corsOptions:cors.CorsOptions = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.indexOf(origin || '') !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  optionsSuccessStatus: 200,
-};
+// const corsOptions:cors.CorsOptions = {
+//   origin: (origin, callback) => {
+//     console.log(origin, 1234)
+//     if (origin && allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   optionsSuccessStatus: 200,
+// };
 
 type onlineUser = {
   name: string;
@@ -61,13 +62,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://support-system-nine.vercel.app",
+    origin: "http://localhost:5173",
   },
 });
 
 app.use(logger);
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(credentials);
 app.use(cookieParser());
 

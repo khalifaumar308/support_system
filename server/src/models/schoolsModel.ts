@@ -12,8 +12,10 @@ interface school {
   trainDate: Date;
   address: string;
   package: number;
-  payment: boolean[];
+  payment: string;
   affiliatePercentage: number;
+  referredBy: string;
+  phone:string
 };
 
 interface schoolMethods {
@@ -33,11 +35,13 @@ const schoolSchema = new Schema<school, schoolModel, schoolMethods>({
   currentTerm: String,
   students: Number,
   package: { type:Number, default:0 },
-  payment: [Boolean],
+  payment: String,
   affiliatePercentage: {
     type: Number,
     default:0
-  }
+  },
+  referredBy: { type: String },
+  phone: { type: String }
 });
 
 schoolSchema.method("totalPayable", function totalPayable() {

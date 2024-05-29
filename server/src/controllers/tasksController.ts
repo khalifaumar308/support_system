@@ -75,9 +75,9 @@ export const getDepartmentTasks: RequestHandler = async (req, res) => {
 export const getTasks:RequestHandler =async (req, res) => {
   const {id, department} = req.query;
   let tasks = []
-
   try {
-    if (id) {
+    if (id !== undefined) {
+      console.log('idinnn', id)
       tasks = await TasksModel.find({ 'assignedTo.id': id }).sort("-createdAt");
     } else if (department) {
       tasks = await TasksModel.find({ department: department }).sort("-createdAt").lean();
