@@ -9,7 +9,7 @@ interface user {
   rank: string;
   phone: string;
   schoolsReferred: [schoolReferred];
-  location: string;
+  address: string;
   department: string;
 };
 type schoolReferred = {
@@ -47,7 +47,7 @@ const userSchema = new Schema<user>({
     type: String,
     required: false,
   },
-  location: {
+  address: {
     type: String,
     required: false,
     default:'Kano',

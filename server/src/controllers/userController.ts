@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { sendMail } from "../services/email";
+import { Request, Response } from "express";
 
 interface tokenDecode {
   email: string;
@@ -95,11 +96,11 @@ export const userLogin: RequestHandler = async (req, res) => {
     });
 
     // Send authorization roles and access token to user
-    const { name } = foundUser;
+    const { name, _id, phone, address } = foundUser;
     console.log({ token: 'fgg', email, role: foundUser.role, name, id: foundUser._id })
     return res
       .status(201)
-      .json({ token: accessToken, email, role: foundUser.role, name, id: foundUser._id });
+      .json({ token: accessToken, email, role: foundUser.role, name, _id, phone, address });
   // } else {
   //   return res.status(401).json({message:"Login Failed"});
   // }
@@ -224,3 +225,19 @@ export const refreshToken:RequestHandler = async (req, res) => {
     }
   );
 };
+
+export const updateUser = async(req:Request, res:Response) => {
+  const id = req.params["id"]
+  if (!id) {
+    return res.status(400).json({error:"user id missing"})
+  }
+  try {
+    const updates = req.body
+    const updatedUser = await UsersModel.findByIdAndUpdate(id, updates)
+    if (!updatedUser) return res.status(400).json({ error: "user update failed" })
+    const { name, _id, email, address, phone, role }  = updatedUser
+    return res.status(201).json({ message: "user updated successfully", user: { name, _id, email, address, phone, role } })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
+}
