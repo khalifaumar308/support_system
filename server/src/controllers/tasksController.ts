@@ -3,10 +3,12 @@ import { RequestHandler } from "express";
 
 export const createTask: RequestHandler = async (req, res) => {
   const data = req.body;
+  // console.log(data)
   try {
     await TasksModel.create(data);
     return res.status(201).json({ message: 'Task created successfully' });
   } catch (error) {
+    console.log(error)
     return res.status(400).json({ error })
   }
 };
@@ -24,7 +26,7 @@ export const createTask: RequestHandler = async (req, res) => {
 
 export const updateTask: RequestHandler = async (req, res) => {
   const updateData = req.body;
-  const taskId = req.params[0]
+  const taskId = req.params.id
 
   if (!taskId) {
     return res.status(400).json({ message: 'Missing parameter: id' })
@@ -72,23 +74,18 @@ export const getDepartmentTasks: RequestHandler = async (req, res) => {
   return res.status(200).json({ completed, inProgress, pending });
 }
 
-export const getTasks:RequestHandler =async (req, res) => {
-  const {id, department} = req.query;
-  let tasks = []
+export const getTasks: RequestHandler = async (req, res) => {
+  const { id } = req.params;
   try {
-    if (id !== undefined) {
-      console.log('idinnn', id)
-      tasks = await TasksModel.find({ 'assignedTo.id': id }).sort("-createdAt");
-    } else if (department) {
-      tasks = await TasksModel.find({ department: department }).sort("-createdAt").lean();
-    } else {
-      tasks = await TasksModel.find().sort("-createdAt").lean().exec()
+    if (id) {
+      const tasks = await TasksModel.find({ $or: [{ 'assignedTo.id': id }, { "createdBy": id }] }).sort("-createdAt");
+      const completed = tasks.filter(task => task.status === 'Completed');
+      const inProgress = tasks.filter(task => task.status === 'In Progress');
+      const pending = tasks.filter(task => task.status === 'Pending');
+      return res.status(200).json({ completed, inProgress, pending });
     }
-    const completed = tasks.filter(task => task.status === 'Completed');
-    const inProgress = tasks.filter(task => task.status === 'In Progress');
-    const pending = tasks.filter(task => task.status === 'Pending');
-    return res.status(200).json({ completed, inProgress, pending });
+    return res.status(400).json({ error: "user is required" })
   } catch (error) {
-    return res.status(400).json({error})
+    return res.status(400).json({ error })
   }
-}
+};
